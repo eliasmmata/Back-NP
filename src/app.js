@@ -1,32 +1,22 @@
-import express from 'express'
+const express = require("express");
+const bodyParser = require("body-parser");
+/* const apicache = require("apicache"); */
 
-import swaggerJSDoc from 'swagger-jsdoc'
-import swaggerUI from 'swagger-ui-express'
+import swaggerUI from 'swagger-ui-express';
+import swaggerSpec from './v1/swagger';
+import newsRoutes from './v1/routes/newsRoutes';
 
-import { options } from './swaggerOptions'
+const app = express();
+/* const cache = apicache.middleware; */
 
-const specs = swaggerJSDoc(options)
-
-import newsRoutes from './routes/news'
-
-const app = express()
+app.use(bodyParser.json());
+/* app.use(cache("2 minutes")); */
 
 require('dotenv').config();
 
-// Load variables from .env.local if it exists
-const result = require('dotenv').config({ path: '.env.local' });
-
-if (result.error) {
-  // Handle the error if .env.local doesn't exist, or there's an issue with it
-  console.error(result.error);
-}
-
 app.use(express.json())
 
-app.use(newsRoutes)
-
-
-
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(specs))
+app.use("/api/v1/", newsRoutes);
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 export default app
