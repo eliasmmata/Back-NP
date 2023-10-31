@@ -8,7 +8,7 @@ const options = {
     openapi: "3.0.0",
     info: { title: "Newspaper Master API", version: "1.0.0" },
   },
-  apis: ["./src/v1/routes/workoutRoutes.js", "./src/database/Workout.js"],
+  apis: ["./src/v1/routes/newsRoutes.js", "./src/database/News.js"],
 };
 
 // Docs in JSON format
@@ -24,7 +24,7 @@ const swaggerDocs = (app, port) => {
     res.send(swaggerSpec);
   });
   console.log(
-    `Version 1 Docs are available on http://localhost:${port}/api/v1/docs`
+    `🗒 Version 1 Docs are available on http://localhost:${port}/api/v1/docs`
   );
 };
 

@@ -6,7 +6,6 @@ import { connect } from "../database/database"
 const getNews = async (req, res) => {
 
    /*  const getNews = newsService.getNews(); */
-
     const connection = await connect();
 
     try {
@@ -29,7 +28,7 @@ const getNews = async (req, res) => {
     }
   };
 
-// Lista de 5 noticias aleatorias (TEST)
+// Lista de noticias aleatorias (query ?list=X)
 const getListOfNews = async (req, res, listCount) => {
     const connection = await connect();
 
@@ -49,6 +48,7 @@ const getListOfNews = async (req, res, listCount) => {
 const getSingleNews = async (req, res) => {
     const connection = await connect();
 
+    console.log('HOLA getSingleNews!!');
     try {
         const [rows] = await connection.query('SELECT * FROM news WHERE id = ?', [
             req.params.id
