@@ -2,44 +2,40 @@ import express from 'express'
 import redisClient from '../../redisClient'
 
 const newsController = require("../../controllers/newsController");
-
 const router = express.Router();
-
 const axios = require('axios')
 
-router.get("/character", async (req, res) => {
-  const response = await axios.get("https://rickandmortyapi.com/api/character")
-  redisClient.set("characters", JSON.stringify(response.data), (err, reply) => {
-    if (err) console.log(err);
+router.get('/character', async (req, res) => {
+  try {
+    // Attempt to retrieve data from Redis
+    const cachedData = await redisClient.get('characters');
 
-    console.log(reply);
+    if (cachedData) {
+      // Data is cached in Redis, return it
+      res.json(JSON.parse(cachedData));
+    } else {
+      // Data is not in cache, fetch it from the source
+      const response = await axios.get("https://rickandmortyapi.com/api/character");
 
-    res.json(response.data);
-  })
-})
+      // Store the response data in Redis for future requests
+      redisClient.set('characters', JSON.stringify(response.data), (err, reply) => {
+        if (err) {
+          console.error(err);
+        }
+
+        // Return the fetched data to the client
+        res.json(response.data);
+      });
+    }
+  } catch (error) {
+    // Handle errors
+    console.error('Error in route handler:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // ----- GET --------------------------------------------------------------------
-
-/**
- * @openapi
- * /api/v1/news/count:
- *   get:
- *     summary: Get total news counter
- *     tags:
- *       - News
- *     responses:
- *       200:
- *         description: Successful response with the total news counter
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 count:
- *                   type: integer
- *                   description: The total count of news items
- */
-router.get("/news/count", newsController.getNewsCount);
 
 /**
  * @openapi
@@ -78,17 +74,20 @@ router.get("/news/count", newsController.getNewsCount);
  */
 router.get('/news', async (req, res) => {
   try {
-    const responseData = await newsController.getNews(req);
-    // Store the responseData in Redis
-    redisClient.set('newsData', JSON.stringify(responseData), (err, reply) => {
-      if (err) {
-        console.log('Error storing news data in Redis:', err);
-      } else {
-        console.log('News data stored in Redis:', reply);
-      }
-    });
-    console.log('Response data:', responseData);
-    res.json(responseData);
+    // Retrieve data from Redis
+    const cachedData = await redisClient.get('allnews');
+    if (cachedData) {
+      // Data is cached in Redis, return it
+      res.json(JSON.parse(cachedData));
+    } else {
+      // Data is not in cache, fetch it from the source
+      const responseData = await newsController.getNews(req);
+
+      // Store the responseData in Redis for future requests
+      redisClient.set('allnews', JSON.stringify(responseData));
+
+      res.json(responseData);
+    }
   } catch (error) {
     // Handle errors
     console.error('Error in route handler:', error);
@@ -140,9 +139,28 @@ router.get('/news', async (req, res) => {
  *       404:
  *         description: News item not found
  */
-
 router.get('/news/:id', newsController.getSingleNews);
 
+/**
+ * @openapi
+ * /api/v1/news/count:
+ *   get:
+ *     summary: Get total news counter
+ *     tags:
+ *       - News
+ *     responses:
+ *       200:
+ *         description: Successful response with the total news counter
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: The total count of news items
+ */
+router.get("/news/count", newsController.getNewsCount);
 
 // ----- POST --------------------------------------------------------------------
 /**

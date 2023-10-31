@@ -43,8 +43,6 @@ const getListOfNews = async (req, res, listCount) => {
 // Seleccionar noticia por Id
 const getSingleNews = async (req, res) => {
     const connection = await connect();
-
-    console.log('HOLA getSingleNews!!');
     try {
         const [rows] = await connection.query('SELECT * FROM news WHERE id = ?', [
             req.params.id
