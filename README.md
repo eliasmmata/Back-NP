@@ -4,7 +4,7 @@ docker run -p 6379:6379 --name news_api_master_redis -d redis
 
 **CACHE**
 
-redis-commander
+redis-commander (open interface of redis DB)
 
 **Respositorios**
 

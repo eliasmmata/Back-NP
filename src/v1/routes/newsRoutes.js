@@ -1,14 +1,23 @@
 import express from 'express'
+import redisClient from '../../redisClient'
 
 const newsController = require("../../controllers/newsController");
 
 const router = express.Router();
 
+const axios = require('axios')
 
-router.route('/test').get(async (req, res) => {
-  await redis.zAdd('$200', { score: 1, value: 'value' });
-  res.send({});
-});
+router.get("/character", async (req, res) => {
+  const response = await axios.get("https://rickandmortyapi.com/api/character")
+  redisClient.set("characters", JSON.stringify(response.data), (err, reply) => {
+    if (err) console.log(err);
+
+    console.log(reply);
+
+    res.json(response.data);
+  })
+})
+
 // ----- GET --------------------------------------------------------------------
 
 /**
@@ -67,21 +76,24 @@ router.get("/news/count", newsController.getNewsCount);
  *                   provincia:
  *                     type: string
  */
-router.get('/news', (req, res) => {
-  console.log('NEWS ROUTES ENTRANDO??');
-  const listCount = req.query.list ? parseInt(req.query.list, 10) : undefined;
-  newsController.getNews(req, res, listCount, client, (newsData) => {
-    // Almacena la respuesta in Redis as a JSON string
-    client.set('allnews', JSON.stringify(newsData), (error) => {
-      if (error) {
-        console.error('Error al guardar en Redis:', error);
+router.get('/news', async (req, res) => {
+  try {
+    const responseData = await newsController.getNews(req);
+    // Store the responseData in Redis
+    redisClient.set('newsData', JSON.stringify(responseData), (err, reply) => {
+      if (err) {
+        console.log('Error storing news data in Redis:', err);
       } else {
-        console.log('Datos almacenados en Redis.');
-        // Envía la respuesta JSON al cliente
-        res.json({ message: 'Datos almacenados en Redis correctamente', data: newsData });
+        console.log('News data stored in Redis:', reply);
       }
     });
-  });
+    console.log('Response data:', responseData);
+    res.json(responseData);
+  } catch (error) {
+    // Handle errors
+    console.error('Error in route handler:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 

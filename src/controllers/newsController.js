@@ -1,31 +1,12 @@
 import { connect } from "../database/database"
 
-
-// Contador de noticias
-const getNewsCount = async (req, res) => {
-    const connection = await connect();
-    try {
-        const [rows] = await connection.query('SELECT COUNT(*) FROM news');
-        res.json(rows[0]["COUNT(*)"]);
-    } catch (error) {
-        console.error('Error fetching news count:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    } finally {
-        connection.release();
-    }
-};
-
 /* const newsService = require("../services/newsService"); */
 
 // Seleccionar las noticias  (query list=X para seleccionar un número determinado)
-const getNews = async (req, res) => {
-
-   /*  const getNews = newsService.getNews(); */
+const getNews = async (req) => {
     const connection = await connect();
-
     try {
       let query = 'SELECT * FROM news';
-
       if (req.query.list) {
         const listCount = parseInt(req.query.list, 10);
         if (!isNaN(listCount) && listCount > 0) {
@@ -34,10 +15,10 @@ const getNews = async (req, res) => {
       }
 
       const [rows] = await connection.query(query);
-      res.json(rows);
+      return rows;
     } catch (error) {
       console.error('Error fetching news:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      throw error;
     } finally {
       connection.release();
     }
@@ -76,6 +57,21 @@ const getSingleNews = async (req, res) => {
         connection.release();
     }
 };
+
+// Contador de noticias
+const getNewsCount = async (req, res) => {
+    const connection = await connect();
+    try {
+        const [rows] = await connection.query('SELECT COUNT(*) FROM news');
+        res.json(rows[0]["COUNT(*)"]);
+    } catch (error) {
+        console.error('Error fetching news count:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        connection.release();
+    }
+};
+
 
 // Insertar noticia en base de datos
 const saveSingleNews = async (req, res) => {
