@@ -5,7 +5,8 @@ const newsController = require("../../controllers/newsController");
 const router = express.Router();
 const axios = require('axios')
 
-router.get('/character', async (req, res) => {
+// ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY
+router.get('/cache', async (req, res) => {
   try {
     // Attempt to retrieve data from Redis
     const cachedData = await redisClient.get('characters');
