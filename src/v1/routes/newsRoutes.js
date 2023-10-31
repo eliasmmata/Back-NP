@@ -33,6 +33,26 @@ router.get('/cache', async (req, res) => {
 });
 
 // ----- GET --------------------------------------------------------------------
+/**
+ * @openapi
+ * /api/v1/news/count:
+ *   get:
+ *     summary: Get total news counter
+ *     tags:
+ *       - News
+ *     responses:
+ *       200:
+ *         description: Successful response with the total news counter
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: The total count of news items
+ */
+router.get("/news/count", newsController.getNewsCount);
 
 /**
  * @openapi
@@ -137,27 +157,6 @@ router.get('/news', async (req, res) => {
  *         description: News item not found
  */
 router.get('/news/:id', newsController.getSingleNews);
-
-/**
- * @openapi
- * /api/v1/news/count:
- *   get:
- *     summary: Get total news counter
- *     tags:
- *       - News
- *     responses:
- *       200:
- *         description: Successful response with the total news counter
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 count:
- *                   type: integer
- *                   description: The total count of news items
- */
-router.get("/news/count", newsController.getNewsCount);
 
 // ----- POST --------------------------------------------------------------------
 /**

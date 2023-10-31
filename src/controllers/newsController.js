@@ -58,6 +58,7 @@ const getSingleNews = async (req, res) => {
 
 // Contador de noticias
 const getNewsCount = async (req, res) => {
+    console.log('HOLA!!');
     const connection = await connect();
     try {
         const [rows] = await connection.query('SELECT COUNT(*) FROM news');
