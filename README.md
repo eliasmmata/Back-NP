@@ -1,3 +1,13 @@
+**DOCKER**
+
+docker run -p 6379:6379 --name news_api_master_redis -d redis
+
+**CACHE**
+
+redis-commander
+
+**Respositorios**
+
 https://github.com/eliasmmata/Front-NP
 
 https://github.com/eliasmmata/Back-NP

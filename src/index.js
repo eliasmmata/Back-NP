@@ -1,23 +1,34 @@
-import express from 'express'
-import apicache from 'apicache'
-import redis from 'redis'
+const express = require('express')
+const responseTime = require('response-time')
 
 require('dotenv').config();
 
-import './database/database';
-import newsRoutes from './v1/routes/newsRoutes';
+import redis from './redis'
+import './database/database'
+import newsRoutes from './v1/routes/newsRoutes'
 const {swaggerDocs: V1SwaggerDocs} = require("./v1/swagger")
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 
+app.use(responseTime())
 app.use(express.json())
-//if redisClient option is defined, apicache will use redis client instead of built-in memory store
-let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware
-app.use("/api/v1/", newsRoutes);
 
 
-app.listen(PORT, () => {
-  console.log(`API is listening on port ${PORT}`);
-  V1SwaggerDocs(app, PORT)
-});
+app.use("/api/v1/", newsRoutes)
+
+
+// Assuming redis.connect() returns a Promise
+redis
+  .connect()
+  .then(() => {
+    // This code will execute after the Redis connection is established
+    app.listen(PORT, () => {
+      console.log(`API is listening on port ${PORT}`)
+      V1SwaggerDocs(app, PORT)
+    });
+  })
+  .catch((err) => {
+    // Handle any errors that occur during the Redis connection
+    console.error('Error connecting to Redis:', err);
+  })

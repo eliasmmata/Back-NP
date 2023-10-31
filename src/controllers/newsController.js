@@ -1,5 +1,20 @@
 import { connect } from "../database/database"
 
+
+// Contador de noticias
+const getNewsCount = async (req, res) => {
+    const connection = await connect();
+    try {
+        const [rows] = await connection.query('SELECT COUNT(*) FROM news');
+        res.json(rows[0]["COUNT(*)"]);
+    } catch (error) {
+        console.error('Error fetching news count:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        connection.release();
+    }
+};
+
 /* const newsService = require("../services/newsService"); */
 
 // Seleccionar las noticias  (query list=X para seleccionar un número determinado)
@@ -56,21 +71,6 @@ const getSingleNews = async (req, res) => {
         res.json(rows);
     } catch (error) {
         console.error('Error fetching single news:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    } finally {
-        connection.release();
-    }
-};
-
-// Contador de noticias
-const getNewsCount = async (req, res) => {
-    const connection = await connect();
-
-    try {
-        const [rows] = await connection.query('SELECT COUNT(*) FROM news');
-        res.json(rows[0]["COUNT(*)"]);
-    } catch (error) {
-        console.error('Error fetching news count:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     } finally {
         connection.release();

@@ -1,13 +1,14 @@
 import express from 'express'
-import apicache from 'apicache'
-import redis from 'redis'
 
 const newsController = require("../../controllers/newsController");
 
 const router = express.Router();
 
-let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware
 
+router.route('/test').get(async (req, res) => {
+  await redis.zAdd('$200', { score: 1, value: 'value' });
+  res.send({});
+});
 // ----- GET --------------------------------------------------------------------
 
 /**
@@ -29,7 +30,7 @@ let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).mid
  *                   type: integer
  *                   description: The total count of news items
  */
-router.get("/news/count", cacheWithRedis('5 minutes'), newsController.getNewsCount);
+router.get("/news/count", newsController.getNewsCount);
 
 /**
  * @openapi
@@ -67,9 +68,22 @@ router.get("/news/count", cacheWithRedis('5 minutes'), newsController.getNewsCou
  *                     type: string
  */
 router.get('/news', (req, res) => {
+  console.log('NEWS ROUTES ENTRANDO??');
   const listCount = req.query.list ? parseInt(req.query.list, 10) : undefined;
-  newsController.getNews(req, res, listCount);
+  newsController.getNews(req, res, listCount, client, (newsData) => {
+    // Almacena la respuesta in Redis as a JSON string
+    client.set('allnews', JSON.stringify(newsData), (error) => {
+      if (error) {
+        console.error('Error al guardar en Redis:', error);
+      } else {
+        console.log('Datos almacenados en Redis.');
+        // Envía la respuesta JSON al cliente
+        res.json({ message: 'Datos almacenados en Redis correctamente', data: newsData });
+      }
+    });
+  });
 });
+
 
 /**
  * @openapi
