@@ -4,6 +4,3 @@ GET http://localhost:3000/api/v1/news
 
 ### Get news counter
 GET http://localhost:3000/api/v1/news/count
-
-### FETCH FROM AXIOS URL NOT DIRECTLY FROM DATABASE
-GET http://localhost:3000/api/v1/cache

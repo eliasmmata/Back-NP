@@ -1,10 +1,11 @@
-// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES
-const Workout = require("../database/Workout");
+const Test = require("../../database/Test");
+const workoutService = require("../../services/workoutService");
+
 const { v4: uuid } = require("uuid");
-// *** ADD ***
+
 const getAllWorkouts = () => {
     try {
-      const allWorkouts = Workout.getAllWorkouts();
+      const allWorkouts = Test.getAllWorkouts();
       return allWorkouts;
     } catch (error) {
       throw error;
@@ -19,10 +20,14 @@ const getAllWorkouts = () => {
       updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
     };
     try {
-      const createdWorkout = Workout.createNewWorkout(workoutToInsert);
+      const createdWorkout = Test.createNewWorkout(workoutToInsert);
       return createdWorkout;
     } catch (error) {
       throw error;
     }
   };
-// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES
+
+module.exports = {
+    getAllWorkouts,
+    createNewWorkout
+  };

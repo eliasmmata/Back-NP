@@ -35,7 +35,8 @@
     "response-time": "^2.3.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "wpcom": "^5.4.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",

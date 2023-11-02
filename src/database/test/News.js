@@ -1,4 +1,4 @@
-import { connect } from "../database/database"
+import { connect } from "../database"
 
 const getNews = async () => {
     const connection = await connect();
