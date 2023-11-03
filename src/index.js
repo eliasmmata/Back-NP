@@ -11,6 +11,7 @@ import redisClient from './redisClient'
 import './database/database'
 import newsRoutes from './v1/routes/newsRoutes'
 import postsRoutes from './v1/routes/postsRoutes'
+import mediaRoutes from './v1/routes/mediaRoutes'
 
 
 // Express
@@ -23,6 +24,7 @@ app.use(express.json())
 // Routes
 app.use("/api/v1/", newsRoutes)
 app.use("/api/v1/", postsRoutes)
+app.use("/api/v1/", mediaRoutes)
 
 
 // Coonection (Assuming redis.connect() returns a Promise)
