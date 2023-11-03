@@ -5,10 +5,16 @@ const responseTime = require('response-time')
 require('dotenv').config();
 
 
-// Files
+// Swagger file
 const {swaggerDocs: V1SwaggerDocs} = require("./v1/swagger")
+
+// Cache file
 import redisClient from './redisClient'
+
+// Database connection file
 import './database/database'
+
+// Routes Files
 import newsRoutes from './v1/routes/newsRoutes'
 import postsRoutes from './v1/routes/postsRoutes'
 import mediaRoutes from './v1/routes/mediaRoutes'
@@ -16,7 +22,7 @@ import mediaRoutes from './v1/routes/mediaRoutes'
 
 // Express
 const app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 
 app.use(responseTime())
 app.use(express.json())
@@ -27,7 +33,7 @@ app.use("/api/v1/", postsRoutes)
 app.use("/api/v1/", mediaRoutes)
 
 
-// Coonection (Assuming redis.connect() returns a Promise)
+// Connection (Assuming redis.connect() returns a Promise)
 redisClient
   .connect()
   .then(() => {

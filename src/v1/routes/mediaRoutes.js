@@ -5,9 +5,6 @@ const router = express.Router();
 import mediaController from '../../controllers/mediaController'
 
 
-
-console.log('MEDIA ROUTES');
-
 // Media id attached (featured_media) by Post ID
 router.get('/media/:postId', mediaController.getMediaByPostId);
 
