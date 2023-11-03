@@ -4,5 +4,8 @@ GET http://localhost:3000/api/v1/posts
 ### SINGLE POST BY ID FROM WORDPRESS API
 GET http://localhost:3000/api/v1/posts/258623
 
-### MEDIA DATA BY SINGLE POST ID
+### featured_media ID BY SINGLE POST ID
 GET http://localhost:3000/api/v1/media/258623
+
+### MEDIA info BY featured_media ID
+GET http://localhost:3000/api/v1/media/data/262528

@@ -13,8 +13,11 @@ router.get('/posts', postsController.getPostsList);
 // Single Post by ID
 router.get('/posts/:postId', postsController.getPostById);
 
-// Media data by Post ID
+// Media id attached (featured_media) by Post ID
 router.get('/media/:postId', postsController.getMediaByPostId);
+
+// Media data by featured_media ID
+router.get('/media/data/:featuredMediaId', postsController.getFeaturedMediaDetails);
 
 
 // TEST ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY
