@@ -39,11 +39,14 @@ redisClient
     // This code will execute after the Redis connection is established
     app.listen(PORT, () => {
       console.log(`API is listening on port ${PORT}`)
-      /* console.log('host:', process.env.MYSQLHOST)
-      console.log('port:', process.env.MYSQLPORT)
-      console.log('user:', process.env.MYSQLUSER)
-      console.log('password:', process.env.MYSQLPASSWORD)
-      console.log('database:', process.env.MYSQLDATABASE) */
+      /* console.log('mysql host:', process.env.MYSQLHOST)
+      console.log('mysql port:', process.env.MYSQLPORT)
+      console.log('mysql user:', process.env.MYSQLUSER)
+      console.log('mysql password:', process.env.MYSQLPASSWORD)
+      console.log('mysql database:', process.env.MYSQLDATABASE)
+      console.log('redis host:', process.env.REDISHOST)
+      console.log('redis port:', process.env.REDISPORT)
+      console.log('redis password:', process.env.REDISPASSWORD) */
       V1SwaggerDocs(app, PORT)
     });
   })
