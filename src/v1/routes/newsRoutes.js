@@ -170,6 +170,8 @@ router.get('/news/:id', newsController.getSingleNews);
  */
 router.post('/news', newsController.saveSingleNews);
 
+// Insert TO RAILWAY DB
+router.post('/insert-news', newsController.saveAllNews);
 
 // ----- PUT --------------------------------------------------------------------
 

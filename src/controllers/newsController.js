@@ -124,3 +124,43 @@ export async function deleteSingleNews(req, res) {
         connection.release();
     }
 };
+
+
+// Modifica la función saveSingleNews para que sea saveAllNews
+export async function saveAllNews(req, res) {
+    const connection = await connect();
+
+    try {
+        // Los datos de las noticias a insertar (reemplaza esto con tus datos)
+        const newsData = [
+            { id: 1, titular: 'Algo pasó en Estepona', descripcion: 'Explicación de lo que sucedió en Estepona. Detalles impactantes.', noticia: 'Cultura', redactor: 'Javier', provincia: 'Estepona' },
+            { id: 2, titular: 'Noticias tecnológicas en Malaga', descripcion: 'Las últimas noticias tecnológicas en Malaga, ¡mantente informado!', noticia: 'Tecnología', redactor: 'Carlos', provincia: 'Malaga' },
+            { id: 3, titular: 'Últimas novedades de salud en Rincón de la Victoria', descripcion: 'Mantente al tanto de las novedades de salud en Rincón de la Victoria.', noticia: 'Salud', redactor: 'Isabel', provincia: 'Rincón de la Victoria' },
+            { id: 4, titular: 'Deportes en Fuengirola', descripcion: 'Noticias deportivas en Fuengirola. Resultados, eventos y más.', noticia: 'Deportes', redactor: 'Ana', provincia: 'Fuengirola' },
+            { id: 5, titular: 'Economía en Benalmádena', descripcion: 'Actualidad económica en Benalmádena. Información financiera clave.', noticia: 'Economía', redactor: 'Laura', provincia: 'Benalmádena' },
+            { id: 6, titular: 'Noticias internacionales en Mijas', descripcion: 'Últimas noticias internacionales en Mijas. Cobertura global.', noticia: 'Internacional', redactor: 'Sergio', provincia: 'Mijas' },
+            { id: 7, titular: 'Política en Álora', descripcion: 'Política en Álora: Análisis, debates y decisiones gubernamentales.', noticia: 'Política', redactor: 'Luis', provincia: 'Álora' },
+            { id: 8, titular: 'Entretenimiento en Marbella', descripcion: 'Entretenimiento en Marbella: ¡Diversión asegurada para todos!', noticia: 'Entretenimiento', redactor: 'Marta', provincia: 'Marbella' },
+            { id: 9, titular: 'Avances científicos en Campillos', descripcion: 'Los avances científicos en Campillos te sorprenderán. Descúbrelos aquí.', noticia: 'Ciencia', redactor: 'Diego', provincia: 'Campillos' },
+            { id: 10, titular: 'Medio Ambiente en Torremolinos', descripcion: 'Medio Ambiente en Torremolinos: Cuida nuestro planeta y mantente informado.', noticia: 'Medio Ambiente', redactor: 'Elena', provincia: 'Torremolinos' }
+        ];
+
+        // Consulta SQL para insertar los datos
+        const query = `INSERT INTO news (id, titular, descripcion, noticia, redactor, provincia) VALUES ?`;
+
+        console.log('Database connection successful'); // Agregar este log
+        console.log(query);
+        // Ejecuta la consulta
+        const [results] = await connection.query(query, [newsData.map(news => [news.id, news.titular, news.descripcion, news.noticia, news.redactor, news.provincia])]);
+
+        res.json({
+            message: 'News inserted successfully',
+            insertedCount: results.affectedRows
+        });
+    } catch (error) {
+        console.error('Error inserting news:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    } finally {
+        connection.release();
+    }
+};
