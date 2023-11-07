@@ -1,6 +1,7 @@
 // In src/v1/swagger.js
-const swaggerJSDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
 
 // Basic Meta Informations about our API
 const options = {
@@ -15,7 +16,7 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 // Function to setup our docs
-const swaggerDocs = (app, port) => {
+export const swaggerDocs = (app, port) => {
   // Route-Handler to visit our docs
   app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   // Make our docs in JSON format available
@@ -27,5 +28,3 @@ const swaggerDocs = (app, port) => {
     `🗒 Version 1 Docs are available on http://localhost:${port}/api/v1/docs`
   );
 };
-
-module.exports = { swaggerDocs };

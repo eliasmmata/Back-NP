@@ -1,5 +1,5 @@
 // In src/services/recordService.js
-const Record = require("../database/Record");
+import Record from '../database/Record';
 
 const getRecordForWorkout = (workoutId) => {
   try {

@@ -1,9 +1,10 @@
 
 // Worpdress api package
-const WPCOM = require('wpcom');
-var wpcom = WPCOM();
+import WPCOM from 'wpcom';
+const wpcom = WPCOM();
+
 const site = wpcom.site('en.blog.wordpress.com');
-const axios = require('axios');
+import axios from 'axios';
 
 // Get all posts (Library WPCOM)
 const getPostsList = (req, res) => {
@@ -37,8 +38,5 @@ const getPostById = (req, res) => {
 };
 
 
-module.exports = {
-    getPostsList,
-    getPostById,
-};
+export { getPostsList, getPostById };
 

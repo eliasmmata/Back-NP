@@ -1,10 +1,10 @@
-const express = require('express')
+import express from 'express';
 const router = express.Router();
-const axios = require('axios')
+import axios from 'axios';
 
 // Import files
-import redisClient from '../../redisClient'
-import postsController from '../../controllers/postsController'
+import redisClient from '../../config/redisClient.js'
+import * as postsController from '../../controllers/postsController.js'
 
 
 // All Posts
@@ -42,4 +42,4 @@ router.get('/cache', async (req, res) => {
 });
 
 
-module.exports = router;
+export { router };

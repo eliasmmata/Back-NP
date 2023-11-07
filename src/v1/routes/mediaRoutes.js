@@ -1,8 +1,10 @@
-const express = require('express')
+import express from 'express';
+import axios from 'axios';
+
 const router = express.Router();
 
 // Import files
-import mediaController from '../../controllers/mediaController'
+import * as mediaController from '../../controllers/mediaController.js'
 
 
 // Media id attached (featured_media) by Post ID
@@ -12,4 +14,4 @@ router.get('/media/:postId', mediaController.getMediaByPostId);
 router.get('/media/data/:featuredMediaId', mediaController.getFeaturedMediaDetails);
 
 
-module.exports = router;
+export { router };

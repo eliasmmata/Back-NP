@@ -1,8 +1,8 @@
 // In src/v1/routes/workoutRoutes.js
-const express = require("express");
-const workoutController = require("../../../controllers/test/workoutController");
+import express from 'express';
+import workoutController from "../../../controllers/test/workoutController.js";
 // *** ADD ***
-const recordController = require("../../../controllers/test/recordController");
+import recordController from "../../../controllers/test/recordController.js";
 
 const router = express.Router();
 
@@ -19,5 +19,5 @@ router.patch("/:workoutId", workoutController.updateOneWorkout);
 
 router.delete("/:workoutId", workoutController.deleteOneWorkout);
 
-module.exports = router;
+export { router };
 

@@ -1,7 +1,7 @@
-const Test = require("../../database/Test");
-const workoutService = require("../../services/workoutService");
+import Test from '../../database/Test.js';
+import workoutService from '../../services/workoutService.js';
 
-const { v4: uuid } = require("uuid");
+import { v4 as uuid } from 'uuid';
 
 const getAllWorkouts = () => {
     try {

@@ -1,9 +1,9 @@
-import { connect } from "../database/database"
+import { connect } from "../database/database.js"
 
-/* const newsService = require("../services/newsService"); */
+/* import newsService from '../services/newsService.js';  */
 
 // Seleccionar las noticias  (query list=X para seleccionar un número determinado)
-const getNews = async (req) => {
+export async function getNews(req) {
     const connection = await connect();
     try {
       let query = 'SELECT * FROM news';
@@ -25,7 +25,7 @@ const getNews = async (req) => {
   };
 
 // Lista de noticias aleatorias (query ?list=X)
-const getListOfNews = async (req, res, listCount) => {
+export async function getListOfNews(req, res, listCount) {
     const connection = await connect();
 
     try {
@@ -41,7 +41,7 @@ const getListOfNews = async (req, res, listCount) => {
 };
 
 // Seleccionar noticia por Id
-const getSingleNews = async (req, res) => {
+export async function getSingleNews(req, res) {
     const connection = await connect();
     try {
         const [rows] = await connection.query('SELECT * FROM news WHERE id = ?', [
@@ -57,7 +57,7 @@ const getSingleNews = async (req, res) => {
 };
 
 // Contador de noticias
-const getNewsCount = async (req, res) => {
+export async function getNewsCount(req, res) {
     const connection = await connect();
     try {
         const [rows] = await connection.query('SELECT COUNT(*) FROM news');
@@ -72,7 +72,7 @@ const getNewsCount = async (req, res) => {
 
 
 // Insertar noticia en base de datos
-const saveSingleNews = async (req, res) => {
+export async function saveSingleNews(req, res) {
     const connection = await connect();
 
     try {
@@ -94,7 +94,7 @@ const saveSingleNews = async (req, res) => {
 };
 
 // Actualizar noticia por Id
-const updateSingleNews = async (req, res) => {
+export async function updateSingleNews(req, res) {
     const connection = await connect();
 
     try {
@@ -110,7 +110,7 @@ const updateSingleNews = async (req, res) => {
 };
 
 // Borrar noticia por Id
-const deleteSingleNews = async (req, res) => {
+export async function deleteSingleNews(req, res) {
     const connection = await connect();
 
     try {
@@ -124,13 +124,3 @@ const deleteSingleNews = async (req, res) => {
         connection.release();
     }
 };
-
-module.exports = {
-    getNews,
-    getListOfNews,
-    getSingleNews,
-    getNewsCount,
-    saveSingleNews,
-    updateSingleNews,
-    deleteSingleNews
-  };

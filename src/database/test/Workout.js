@@ -1,4 +1,4 @@
-const DB = require("./dbTest.json");
+import DB from './dbTest.json';
 
 const getAllWorkouts = () => {
   try {

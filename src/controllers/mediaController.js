@@ -1,8 +1,9 @@
 
 // Worpdress api package
-const WPCOM = require('wpcom');
-var wpcom = WPCOM();
-const axios = require('axios');
+import WPCOM from 'wpcom';
+const wpcom = WPCOM();
+
+import axios from 'axios';
 
 
 // AXIOS Get Media ID (feature_media) by PostID
@@ -64,8 +65,5 @@ const getFeaturedMediaDetails = (req, res) => {
 
 
 
-module.exports = {
-    getMediaByPostId,
-    getFeaturedMediaDetails
-};
+export { getMediaByPostId, getFeaturedMediaDetails };
 

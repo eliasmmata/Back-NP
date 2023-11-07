@@ -1,7 +1,8 @@
 import express from 'express'
-import redisClient from '../../redisClient'
+import redisClient from '../../config/redisClient.js';
 
-const newsController = require("../../controllers/newsController");
+import * as newsController from "../../controllers/newsController.js";
+
 const router = express.Router();
 
 // ----- GET --------------------------------------------------------------------
@@ -244,6 +245,6 @@ router.put('/news/:id', newsController.updateSingleNews);
 router.delete('/news/:id', newsController.deleteSingleNews);
 
 
-module.exports = router;
+export { router };
 
 

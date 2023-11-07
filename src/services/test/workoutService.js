@@ -1,6 +1,6 @@
 // TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES// TEST PURPOSES
-const Workout = require("../../database/test/Workout");
-const { v4: uuid } = require("uuid");
+import Workout from '../../database/test/Workout';
+import { v4 as uuid } from 'uuid';
 // *** ADD ***
 const getAllWorkouts = () => {
     try {

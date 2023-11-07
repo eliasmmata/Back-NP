@@ -1,6 +1,4 @@
-import {config as dotenv} from 'dotenv';
-dotenv();
-
+import '../config/dotenvConfig.js';
 
 export const config = {
     host: process.env.MYSQL_HOST,

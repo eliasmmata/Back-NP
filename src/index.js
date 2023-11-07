@@ -1,22 +1,24 @@
-// Packages
-const express = require('express')
-const responseTime = require('response-time')
-require('dotenv').config();
+import express from 'express';
+import responseTime from 'response-time';
 
+// dotenv
+import dotenv from 'dotenv';
+// Import the dotenvConfig module for environment configuration
+import './config/dotenvConfig.js';
 
 // Swagger file
-const {swaggerDocs: V1SwaggerDocs} = require("./v1/swagger")
+import { swaggerDocs as V1SwaggerDocs } from './v1/swagger.js';
 
 // Cache file
-import redisClient from './redisClient'
+import redisClient from './config/redisClient.js'
 
 // Database connection file
-import './database/database'
+import './database/database.js'
 
 // Routes Files
-import newsRoutes from './v1/routes/newsRoutes'
-import postsRoutes from './v1/routes/postsRoutes'
-import mediaRoutes from './v1/routes/mediaRoutes'
+import { router as newsRoutes } from './v1/routes/newsRoutes.js';
+import { router as postsRoutes } from './v1/routes/postsRoutes.js';
+import { router as mediaRoutes } from './v1/routes/mediaRoutes.js';
 
 
 // Express

@@ -1,5 +1,5 @@
 // In src/database/Record.js
-const DB = require("./dbTesst.json");
+import DB from './dbTest.json';
 
 const getRecordForWorkout = (workoutId) => {
   try {
