@@ -1,8 +1,6 @@
 import express from 'express';
 import responseTime from 'response-time';
 
-// dotenv
-import dotenv from 'dotenv';
 // Import the dotenvConfig module for environment configuration
 import './config/dotenvConfig.js';
 
