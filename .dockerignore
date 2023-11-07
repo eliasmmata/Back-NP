@@ -1,0 +1,10 @@
+# Ignorar archivos y directorios específicos
+node_modules
+npm-debug.log
+
+# Ignorar todos los archivos .gitignore
+**/.gitignore
+
+# Ignorar archivos de configuración de editor
+.vscode/
+.idea/

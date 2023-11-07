@@ -1,6 +1,5 @@
 // Packages
 const express = require('express')
-const axios = require('axios')
 const responseTime = require('response-time')
 require('dotenv').config();
 
