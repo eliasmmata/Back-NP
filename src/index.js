@@ -21,7 +21,7 @@ import { router as mediaRoutes } from './v1/routes/mediaRoutes.js';
 
 // Express
 const app = express();
-const PORT = process.env.PORT || 3001
+const PORT = process.env.RAILWAY_PORT || 3001
 
 app.use(responseTime())
 app.use(express.json())
@@ -52,5 +52,5 @@ redisClient
   })
   .catch((err) => {
     // Handle any errors that occur during the Redis connection
-    console.error('Error connecting to Redis:', err);
+    console.error('INDEX Error connecting to Redis:', err);
   })

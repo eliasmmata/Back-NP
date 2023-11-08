@@ -16,6 +16,8 @@ router.get('/posts/:postId', postsController.getPostById);
 
 // TEST ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY
 router.get('/cache', async (req, res) => {
+
+  console.log('HOLA???');
   try {
     // Attempt to retrieve data from Redis
     const cachedData = await redisClient.get('characters');
