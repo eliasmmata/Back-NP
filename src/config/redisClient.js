@@ -18,6 +18,7 @@ const redisClient = redis.createClient({
 // Manejar la conexión exitosa
 redisClient.on('connect', () => {
   console.log('Conexión a Redis exitosa');
+
   // Aquí puedes realizar operaciones en la base de datos Redis
   // No recomendado: Borrar una clave en Redis inmediatamente después de la conexión
   /* const keyToDelete = 'characters';

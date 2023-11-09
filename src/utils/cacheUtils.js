@@ -17,7 +17,7 @@ async function getDataFromCacheOrExternalAPI(RedisKeyName, url) {
             const responseData = await fetchDataFromExternalAPI(url);
             // Almacena los datos de respuesta en Redis para futuras solicitudes
             await redisClient.set(RedisKeyName, JSON.stringify(responseData));
-            console.log('Datos de respuesta externa', responseData);
+
             return responseData;
         }
     } catch (error) {
@@ -27,6 +27,7 @@ async function getDataFromCacheOrExternalAPI(RedisKeyName, url) {
 
 // Función para obtener datos de la caché o la API externa
 async function getDataFromCacheOrDB(RedisKeyName, req) {
+
     try {
         // Try to retrieve data from Redis
         const cachedData = await redisClient.get(RedisKeyName);
@@ -35,6 +36,7 @@ async function getDataFromCacheOrDB(RedisKeyName, req) {
         const totalCount = await getTotalItemCountFromDatabase();
 
         if (cachedData) {
+
             const cachedItems = JSON.parse(cachedData);
 
             // Check if you need more items from the database
@@ -67,11 +69,15 @@ async function getDataFromCacheOrDB(RedisKeyName, req) {
                 return cachedItems.slice(0, req.query.list || cachedItems.length);
             }
         } else {
+
             // Data is not in cache, fetch it from the database
             const responseData = await fetchDataFromDatabase(req, totalCount);
 
+            console.log('responseData', responseData);
+
             // Store the response data in Redis for future requests
             await redisClient.set(RedisKeyName, JSON.stringify(responseData));
+
             return responseData;
         }
     } catch (error) {
