@@ -1,40 +1,23 @@
 import { connect } from "../database/database.js"
 
-/* import newsService from '../services/newsService.js';  */
-
 // Seleccionar las noticias  (query list=X para seleccionar un número determinado)
 export async function getNews(req) {
     const connection = await connect();
     try {
-      let query = 'SELECT * FROM news';
-      if (req.query.list) {
-        const listCount = parseInt(req.query.list, 10);
-        if (!isNaN(listCount) && listCount > 0) {
-          query += ` ORDER BY RAND() LIMIT ${listCount}`;
+        let query = 'SELECT * FROM news';
+
+        if (typeof req.query.list !== 'undefined') {
+            const listCount = parseInt(req.query.list, 10);
+            if (!isNaN(listCount) && listCount > 0) {
+                query += ` LIMIT ${listCount}`;
+            }
         }
-      }
 
-      const [rows] = await connection.query(query);
-      return rows;
-    } catch (error) {
-      console.error('Error fetching news:', error);
-      throw error;
-    } finally {
-      connection.release();
-    }
-  };
-
-// Lista de noticias aleatorias (query ?list=X)
-export async function getListOfNews(req, res, listCount) {
-    const connection = await connect();
-
-    try {
-        const query = `SELECT * FROM news ORDER BY RAND() LIMIT ${listCount}`;
         const [rows] = await connection.query(query);
-        res.json(rows);
+        return rows;
     } catch (error) {
-        console.error('Error fetching random news:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error fetching news:', error);
+        throw error;
     } finally {
         connection.release();
     }

@@ -27,9 +27,9 @@ app.use(responseTime())
 app.use(express.json())
 
 // Routes
-app.use("/api/v1/", newsRoutes)
-app.use("/api/v1/", postsRoutes)
-app.use("/api/v1/", mediaRoutes)
+app.use("/api/v1", newsRoutes)
+app.use("/api/v1", postsRoutes)
+app.use("/api/v1", mediaRoutes)
 
 
 // Connection (Assuming redis.connect() returns a Promise)

@@ -1,6 +1,6 @@
 ### ALL POSTS FROM WORDPRESS API
-GET http://localhost:3000/api/v1/posts
+GET http://localhost:3001/api/v1/posts
 
 ### SINGLE POST BY ID FROM WORDPRESS API
-GET http://localhost:3000/api/v1/posts/258623
+GET http://localhost:3001/api/v1/posts/258623
 

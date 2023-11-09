@@ -20,7 +20,8 @@ const getPostsList = (req, res) => {
 const getPostById = (req, res) => {
     const postId = req.params.postId;
     /* const apiUrl = `https://public-api.wordpress.com/rest/v1.1/sites/en.blog.wordpress.com/posts/${postId}`; */
-    const apiUrl = `https://bangstudio.es/wp-json/wp/v2/posts/${postId}`;
+    const wpUrl = req.query.wpUrl || 'bangstudio.es';
+    const apiUrl = `https://${wpUrl}/wp-json/wp/v2/posts/${postId}`;
 
     axios
         .get(apiUrl)

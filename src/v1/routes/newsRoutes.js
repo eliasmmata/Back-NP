@@ -1,11 +1,19 @@
 import express from 'express'
+
+// Import files
 import redisClient from '../../config/redisClient.js';
 
 import * as newsController from "../../controllers/newsController.js";
 
+import { getDataFromCacheOrDB } from '../../utils/cacheUtils.js';
+
+
 const router = express.Router();
 
 // ----- GET --------------------------------------------------------------------
+
+// Número total de noticias en BBDD
+
 /**
  * @openapi
  * /api/v1/news/count:
@@ -25,7 +33,10 @@ const router = express.Router();
  *                   type: integer
  *                   description: The total count of news items
  */
+
 router.get("/news/count", newsController.getNewsCount);
+
+// Todas las noticias (/news?list=X para seleccionar un número determinado)
 
 /**
  * @openapi
@@ -62,22 +73,14 @@ router.get("/news/count", newsController.getNewsCount);
  *                   provincia:
  *                     type: string
  */
+
 router.get('/news', async (req, res) => {
   try {
-    // Retrieve data from Redis
-    const cachedData = await redisClient.get('allnews');
-    if (cachedData) {
-      // Data is cached in Redis, return it
-      res.json(JSON.parse(cachedData));
-    } else {
-      // Data is not in cache, fetch it from the source
-      const responseData = await newsController.getNews(req);
+    // Use the getDataFromCacheOrExternalAPI function to fetch and cache news data
+    const data = await getDataFromCacheOrDB('allnews', req);
 
-      // Store the responseData in Redis for future requests
-      redisClient.set('allnews', JSON.stringify(responseData));
-
-      res.json(responseData);
-    }
+    // Send the data to the client
+    res.json(data);
   } catch (error) {
     // Handle errors
     console.error('Error in route handler:', error);
@@ -85,6 +88,7 @@ router.get('/news', async (req, res) => {
   }
 });
 
+// Noticia individual por Id
 
 /**
  * @openapi
@@ -132,6 +136,9 @@ router.get('/news', async (req, res) => {
 router.get('/news/:id', newsController.getSingleNews);
 
 // ----- POST --------------------------------------------------------------------
+
+// Subir noticia individual a BBDD
+
 /**
  * @openapi
  * /api/v1/news:
@@ -170,10 +177,12 @@ router.get('/news/:id', newsController.getSingleNews);
  */
 router.post('/news', newsController.saveSingleNews);
 
-// Insert TO RAILWAY DB
+// Insert TO RAILWAY DB (TEST)
 router.post('/insert-news', newsController.saveAllNews);
 
 // ----- PUT --------------------------------------------------------------------
+
+// Actualizar noticia individual
 
 /**
  * @openapi
@@ -223,6 +232,8 @@ router.put('/news/:id', newsController.updateSingleNews);
 
 
 // ----- DELETE --------------------------------------------------------------------
+
+// Borrar noticia individual
 
 /**
  * @openapi

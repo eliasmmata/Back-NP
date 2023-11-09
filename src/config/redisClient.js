@@ -20,7 +20,7 @@ redisClient.on('connect', () => {
   console.log('Conexión a Redis exitosa');
   // Aquí puedes realizar operaciones en la base de datos Redis
   // No recomendado: Borrar una clave en Redis inmediatamente después de la conexión
-  /* const keyToDelete = 'characters'; // Reemplaza con la clave que deseas eliminar
+  /* const keyToDelete = 'characters';
   redisClient.del(keyToDelete, (err, reply) => {
     if (err) {
       console.error('Error al borrar la clave:', err);

@@ -1,6 +1,6 @@
 
 ### Get all news
-GET http://localhost:3000/api/v1/news
+GET http://localhost:3001/api/v1/news
 
 ### Get news counter
-GET http://localhost:3000/api/v1/news/count
+GET http://localhost:3001/api/v1/news/count
