@@ -204,8 +204,6 @@ const options = {
   }
 }
 
-console.log(options.definition.servers[0].url);
-
 // Docs in JSON format
 const swaggerSpec = swaggerJSDoc(options);
 
@@ -221,8 +219,13 @@ export const swaggerDocs = (app, port) => {
     res.send(swaggerSpec);
   });
   if (PORT !== 3001) {
+    console.log('URL SWAGGER PROD: ', options.definition.servers[0].url);
+    console.log(process.env.PORT);
     console.log(`🗒 Version 1 Docs are available on https://back-news-api-master.up.railway.app/api/v1/docs`);
   } else {
+    console.log('URL SWAGGER DEV: ', options.definition.servers[0].url);
     console.log('🗒 Version 1 Docs are available on http://localhost:3001/api/v1/docs');
+    console.log(process.env.PORT);
+
   }
 };
