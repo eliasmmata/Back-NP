@@ -36,7 +36,7 @@ const options = {
   },
   apis: [
     `${__dirname}/routes/mediaRoutes.js`,
-    `${__dirname}/routes/postRoutes.js`,
+    `${__dirname}/routes/postsRoutes.js`,
     `${__dirname}/routes/newsRoutes.js`,
 
    ],
