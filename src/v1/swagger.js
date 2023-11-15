@@ -220,7 +220,7 @@ export const swaggerDocs = (app, port) => {
   });
   if (PORT !== 3001) {
     console.log('URL SWAGGER PROD: ', options.definition.servers[0].url);
-    console.log('RAILWAY_URL: ', RAILWAY_URL);
+    console.log('RAILWAY_URL: ', process.env.RAILWAY_URL);
     console.log(`🗒 Version 1 Docs are available on https://back-news-api-master.up.railway.app/api/v1/docs`);
   } else {
     console.log('URL SWAGGER DEV: ', options.definition.servers[0].url);
