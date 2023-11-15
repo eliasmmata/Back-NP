@@ -2,6 +2,7 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+const PORT = process.env.PORT || 3001
 
 // Basic Meta Informations about our API
 const options = {
