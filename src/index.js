@@ -42,7 +42,7 @@ redisClient
   .connect()
   .then(() => {
     // This code will execute after the Redis connection is established
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0",  () => {
       console.log(`API is listening on port ${PORT}`)
       V1SwaggerDocs(app, PORT)
     });
