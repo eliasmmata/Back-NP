@@ -24,7 +24,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3001",
+        url: process.env.PORT ? `https://back-news-api-master.up.railway.app` : 'http://localhost:3001',
       },
     ],
   },
@@ -217,7 +217,9 @@ export const swaggerDocs = (app, port) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-  console.log(
-    `🗒 Version 1 Docs are available on http://localhost:${port}/api/v1/docs`
-  );
+  if (PORT !== 3001) {
+    console.log(`🗒 Version 1 Docs are available on https://back-news-api-master.up.railway.app/api/v1/docs/`);
+  } else {
+    console.log('🗒 Version 1 Docs are available on http://localhost:3001/api/v1/docs');
+  }
 };
