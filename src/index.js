@@ -21,7 +21,7 @@ import { router as mediaRoutes } from './v1/routes/mediaRoutes.js';
 
 // Express
 const app = express();
-const PORT = process.env.RAILWAY_PORT || 3001
+const PORT = process.env.RAILWAYPORT || 3001
 
 app.use(responseTime())
 app.use(express.json())
