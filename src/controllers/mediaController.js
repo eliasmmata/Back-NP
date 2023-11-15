@@ -48,6 +48,9 @@ const getFeaturedMediaDetails = (req, res) => {
                 const mediaDetails = response.data;
                 if (mediaDetails) {
                     console.log('Featured Media Details:', mediaDetails);
+
+                    console.log('PATH', mediaDetails.link);
+
                 } else {
                     console.log('This post does not have any attached media.');
                 }

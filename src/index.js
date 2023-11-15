@@ -32,6 +32,11 @@ app.use("/api/v1", postsRoutes)
 app.use("/api/v1", mediaRoutes)
 
 
+// Redirect from '/' to '/api/v1/docs' when root path is accessed
+app.get('/', (req, res) => {
+  res.redirect('/api/v1/docs');
+});
+
 // Connection (Assuming redis.connect() returns a Promise)
 redisClient
   .connect()

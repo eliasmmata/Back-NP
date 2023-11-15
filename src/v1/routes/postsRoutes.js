@@ -28,8 +28,6 @@ import { getDataFromCacheOrExternalAPI } from '../../utils/cacheUtils.js';
  *                  description: The number of posts found
  *                posts:
  *                  type: array
- *                  items:
- *                    $ref: '#/components/schemas/Post'
  *                meta:
  *                  type: object
  *                  properties:
