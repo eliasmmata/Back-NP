@@ -2,6 +2,11 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+// Get the directory name of the current module
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const PORT = process.env.PORT || 3001
 
 // Basic Meta Informations about our API
@@ -30,10 +35,11 @@ const options = {
     ],
   },
   apis: [
-    "./src/v1/routes/PostsRoutes.js",
-    "./src/v1/routes/MediaRoutes.js",
-    "./src/v1/routes/NewsRoutes.js",
-  ],
+    `${__dirname}/routes/mediaRoutes.js`,
+    `${__dirname}/routes/postRoutes.js`,
+    `${__dirname}/routes/newsRoutes.js`,
+
+   ],
   components: {
     schemas: {
       Posts: {
@@ -226,6 +232,7 @@ export const swaggerDocs = (app, port) => {
   } else {
     console.log('URL SWAGGER DEV: ', options.definition.servers[0].url);
     console.log(`🗒 Version 1 Docs are available on http://localhost:${PORT}/api/v1/docs`);
+    console.log(swaggerSpec);
 
   }
 };
