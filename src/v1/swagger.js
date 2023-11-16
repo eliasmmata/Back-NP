@@ -224,15 +224,9 @@ export const swaggerDocs = (app, port) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-  if (PORT !== 3001) {
-    console.log('URL SWAGGER PROD: ', options.definition.servers[0].url);
-    console.log('RAILWAY_URL: ', process.env.RAILWAY_URL);
-    console.log(`🗒 Version 1 Docs are available on https://back-news-api-master.up.railway.app/api/v1/docs`);
-    console.log(swaggerSpec);
+  if (port !== 3001) {
+    console.log(`🗒 Version 1 Docs are available on ${process.env.RAILWAY_URL}/api/v1/docs`);
   } else {
-    console.log('URL SWAGGER DEV: ', options.definition.servers[0].url);
-    console.log(`🗒 Version 1 Docs are available on http://localhost:${PORT}/api/v1/docs`);
-    console.log(swaggerSpec);
-
+    console.log(`🗒 Version 1 Docs are available on http://localhost:${port}/api/v1/docs`);
   }
 };
