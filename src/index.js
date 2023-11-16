@@ -44,7 +44,6 @@ redisClient
     // This code will execute after the Redis connection is established
     app.listen(PORT, "0.0.0.0",  () => {
       console.log(`API is listening on port ${PORT}`)
-      console.log(`MYSQLHOST ${process.env.MYSQLHOST}`)
       V1SwaggerDocs(app, PORT)
     });
   })
