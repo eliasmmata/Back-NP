@@ -4,6 +4,11 @@ const redisHost = process.env.REDISHOST;
 const redisPort = process.env.REDISPORT;
 const redisPassword = process.env.REDISPASSWORD;
 
+
+console.log(`REDISHOST: ${process.env.REDISHOST}`)
+console.log(`REDISPASSWORD: ${process.env.REDISPASSWORD}`)
+console.log(`REDISPORT: ${process.env.REDISPORT}`)
+
 let connectionAttempts = 0;
 const maxAttempts = 20;
 
