@@ -33,6 +33,7 @@
     "mysql2": "^3.6.2",
     "mysql2-promise": "^0.1.4",
     "redis": "^4.6.10",
+    "redis-server": "^1.2.2",
     "response-time": "^2.3.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
