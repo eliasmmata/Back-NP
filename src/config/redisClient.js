@@ -1,57 +1,61 @@
+import net from 'net';
 import redis from 'redis';
 
 const redisHost = process.env.REDISHOST;
 const redisPort = process.env.REDISPORT;
 const redisPassword = process.env.REDISPASSWORD;
+const proxyPort = 35634;
 
+console.log(`REDISHOST: ${process.env.REDISHOST}`);
+console.log(`REDISPASSWORD: ${process.env.REDISPASSWORD}`);
+console.log(`REDISPORT: ${process.env.REDISPORT}`);
+console.log(`PORT: ${process.env.PORT}`);
 
-console.log(`REDISHOST: ${process.env.REDISHOST}`)
-console.log(`REDISPASSWORD: ${process.env.REDISPASSWORD}`)
-console.log(`REDISPORT: ${process.env.REDISPORT}`)
+const proxySocket = net.connect(proxyPort, redisPort, () => {
+  console.log('Connected to Railway TCP proxy');
 
-let connectionAttempts = 0;
-const maxAttempts = 20;
-
-// Create a Redis client and configure it with your Redis server information
-// Function to establish Redis connection
-const connectToRedis = () => {
   const redisClient = redis.createClient({
-    /* username: process.env.REDISUSER || 'default', */
-    host: redisHost,
-    port: redisPort,
+    stream: proxySocket,
     password: redisPassword,
-    tls: { servername: redisHost }
+    host: redisHost,
   });
 
-  // Manejar la conexión exitosa
   redisClient.on('connect', () => {
-    console.log('Conexión a Redis exitosa');
+    console.log('Connected to Redis server via TCP proxy');
 
+    // Example usage - set and get values from Redis
+    redisClient.set('exampleKey', 'exampleValue', (err, reply) => {
+      if (err) {
+        console.error('Error setting value in Redis:', err);
+      } else {
+        console.log('Value set in Redis:', reply);
+
+        // Retrieve the value from Redis
+        redisClient.get('exampleKey', (error, value) => {
+          if (error) {
+            console.error('Error getting value from Redis:', error);
+          } else {
+            console.log('Retrieved value from Redis:', value);
+          }
+
+          // Close the Redis connection when done
+          redisClient.quit(() => {
+            console.log('Disconnected from Redis');
+          });
+        });
+      }
+    });
   });
 
-  // Manejar errores de conexión
-    redisClient.on('error', (err) => {
-    console.error('Error en la conexión Redis:', err);
-    connectionAttempts++;
-    if (connectionAttempts >= maxAttempts) {
-      console.error(`Exceeded maximum connection attempts (${maxAttempts}). Exiting.`);
-      process.exit(1); // Exit with a non-zero status code indicating an error
-    } else {
-      console.log(`Attempting reconnection. Attempt ${connectionAttempts} of ${maxAttempts}.`);
-      setTimeout(connectToRedis, 2000); // Retry connection after 2 seconds
-    }
+  redisClient.on('error', (error) => {
+    console.error('Error connecting to Redis:', error);
   });
+});
 
-  // Evitar errores de cierre inesperados
-  redisClient.on('end', () => {
-    console.log('Conexión a Redis cerrada inesperadamente');
-  });
+proxySocket.on('error', (err) => {
+  console.error('Proxy connection error:', err);
+});
 
-  return redisClient;
 
-}
-
-// Start the initial connection attempt
-const initialRedisClient = connectToRedis();
-
-export default initialRedisClient;
+// Export the Redis client to be used in other modules
+export default redisClient;
