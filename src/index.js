@@ -49,10 +49,6 @@ redisClient
       console.log(`MYSQLPASSWORD: ${process.env.MYSQLPASSWORD}`)
       console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`)
       console.log(`MYSQLPORT: ${process.env.MYSQLPORT}`)
-      console.log(`REDISHOST: ${process.env.REDISHOST}`)
-      console.log(`REDISPASSWORD: ${process.env.REDISPASSWORD}`)
-      console.log(`REDISPORT: ${process.env.REDISPORT}`)
-      console.log(`REDISUSER: ${process.env.REDISUSER}`)
       V1SwaggerDocs(app, PORT)
     });
   })
