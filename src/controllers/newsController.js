@@ -41,9 +41,17 @@ export async function getSingleNews(req, res) {
 
 // Contador de noticias
 export async function getNewsCount(req, res) {
+
+    console.log('ENTRA CONTROLLER');
+
     const connection = await connect();
+
+    console.log('connection', connection);
     try {
         const [rows] = await connection.query('SELECT COUNT(*) FROM news');
+
+        console.log([rows][0]);
+
         res.json(rows[0]["COUNT(*)"]);
     } catch (error) {
         console.error('Error fetching news count:', error);

@@ -1,7 +1,8 @@
 import mysql from "mysql2/promise";
 import { config } from "./config.js";
 
-let pool; // Declare a pool variable
+// Declare a pool variable
+let pool;
 
 export const connect = async () => {
   if (!pool) {
