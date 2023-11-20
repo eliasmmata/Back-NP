@@ -6,56 +6,52 @@ import * as postsController from '../../controllers/postsController.js'
 
 import { getDataFromCacheOrExternalAPI } from '../../utils/cacheUtils.js';
 
-// All Posts
+// All Posts from a wpSite
 
 /**
  * @openapi
- * /api/v1/posts:
+ * /api/v1/posts/{wpSite}:
  *   get:
- *     summary: Get a list of all posts
+ *     summary: Get a list of all posts from a specific url WordPress site
  *     tags:
  *       - Posts
+ *     parameters:
+ *       - name: wpSite
+ *         in: path
+ *         description: WordPress site identifier
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
- *      200:
- *        description: Successful response with a list of posts
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                found:
- *                  type: integer
- *                  description: The number of posts found
- *                posts:
- *                  type: array
- *                meta:
- *                  type: object
- *                  properties:
- *                    links:
- *                      type: object
- *                      properties:
- *                        counts:
- *                          type: string
- *                          description: URL for post counts
- *                    next_page:
- *                      type: string
- *                      description: URL for the next page
- *                    wpcom:
- *                      type: boolean
- *                      description: Indicates if it's a WordPress.com site
- *      404:
- *        description: No posts found
+ *       200:
+ *         description: Successful response with a list of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 found:
+ *                   type: integer
+ *                   description: The number of posts found
+ *                 posts:
+ *                   type: array
+ *                   description: List of posts
+ *                 meta:
+ *                   type: object
+ *                   description: Metadata about the posts
+ *       404:
+ *         description: No posts found for the specified site
  */
 
-router.get('/posts', postsController.getPostsList);
+router.get('/posts/:wpSite', postsController.getPostsList);
 
 // Single Post by ID
 
 /**
  * @openapi
- * /api/v1/posts/{postId}:
+ * /api/v1/post/{postId}:
  *   get:
- *     summary: Get a single post by ID
+ *     summary: Get a single post by its ID
  *     tags:
  *       - Posts
  *     parameters:
@@ -184,7 +180,7 @@ router.get('/posts', postsController.getPostsList);
  *         description: Post not found
  */
 
-router.get('/posts/:postId', postsController.getPostById);
+router.get('/post/:postId', postsController.getPostById);
 
 
 // TEST ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY

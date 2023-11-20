@@ -1,5 +1,5 @@
 ### ALL POSTS FROM WORDPRESS API
-GET http://localhost:3001/api/v1/posts
+GET http://localhost:3001/api/v1/posts/bangstudio.es
 
 ### SINGLE POST BY ID FROM WORDPRESS API
 GET http://localhost:3001/api/v1/posts/258623

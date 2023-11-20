@@ -14,9 +14,10 @@ import redisClient from './config/redisClient.js'
 import './database/database.js'
 
 // Routes Files
-import { router as newsRoutes } from './v1/routes/newsRoutes.js';
+import { router as wpsitesRoutes } from './v1/routes/wpsitesRoutes.js';
 import { router as postsRoutes } from './v1/routes/postsRoutes.js';
 import { router as mediaRoutes } from './v1/routes/mediaRoutes.js';
+import { router as newsRoutes } from './v1/routes/newsRoutes.js';
 
 
 // Express
@@ -27,9 +28,10 @@ app.use(responseTime())
 app.use(express.json())
 
 // Routes
-app.use("/api/v1", newsRoutes)
+app.use("/api/v1", wpsitesRoutes)
 app.use("/api/v1", postsRoutes)
 app.use("/api/v1", mediaRoutes)
+app.use("/api/v1", newsRoutes)
 
 
 // Redirect from '/' to '/api/v1/docs' when root path is accessed
@@ -44,11 +46,11 @@ redisClient
     // This code will execute after the Redis connection is established
     app.listen(PORT, "0.0.0.0",  () => {
       console.log(`API is listening on port ${PORT}`)
-      console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`)
+      /* console.log(`MYSQLDATABASE: ${process.env.MYSQLDATABASE}`)
       console.log(`MYSQLHOST: ${process.env.MYSQLHOST}`)
       console.log(`MYSQLPASSWORD: ${process.env.MYSQLPASSWORD}`)
       console.log(`MYSQLUSER: ${process.env.MYSQLUSER}`)
-      console.log(`MYSQLPORT: ${process.env.MYSQLPORT}`)
+      console.log(`MYSQLPORT: ${process.env.MYSQLPORT}`) */
       V1SwaggerDocs(app, PORT)
     });
   })

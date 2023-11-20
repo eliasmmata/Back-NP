@@ -1,3 +1,7 @@
+#test files
+Z-*.md
+Z-*.json
+
 # Logs
 logs
 *.log

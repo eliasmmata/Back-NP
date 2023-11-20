@@ -7,10 +7,10 @@ const redisPassword = process.env.REDISPASSWORD;
 
 const PORT = process.env.PORT || 3001
 
+/* console.log(`PORT: ${PORT}`)
 console.log(`REDISHOST: ${process.env.REDISHOST}`)
 console.log(`REDISPASSWORD: ${process.env.REDISPASSWORD}`)
-console.log(`REDISPORT: ${process.env.REDISPORT}`)
-console.log(`PORT: ${PORT}`)
+console.log(`REDISPORT: ${process.env.REDISPORT}`) */
 
 // Create a Redis client and configure it with your Redis server information
 const redisClient = redis.createClient({
