@@ -4,8 +4,8 @@ import wpSitesQueries from "../database/queries/wpsitesQueries.js";
 
 // AXIOS Get All Post from a WP-site
 const getWpSites = async (req, res) => {
-
     const connection = await connect();
+
     try {
         const query = wpSitesQueries.wpSitesWithCategories;
 
@@ -32,14 +32,12 @@ const getWpSites = async (req, res) => {
 
         res.status(200).json(wpsites);
     } catch (error) {
-        console.error('Error fetching wordpress sites:', error);
         res.status(500).json({ error: 'Error fetching wordpress sites' });
         throw error;
     } finally {
         connection.release();
     }
 };
-
 
 export { getWpSites };
 

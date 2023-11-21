@@ -4,7 +4,7 @@ const router = express.Router();
 // Import files
 import * as postsController from '../../controllers/postsController.js'
 
-import { getDataFromCacheOrExternalAPI } from '../../utils/cacheUtils.js';
+// ----- GET --------------------------------------------------------------------
 
 // All Posts from a wpSite
 
@@ -182,38 +182,79 @@ router.get('/posts/:wpSite', postsController.getPostsList);
 
 router.get('/post/:postId', postsController.getPostById);
 
+// ----- POST --------------------------------------------------------------------
 
-// TEST ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY
+// To another wpSite
 
 /**
  * @openapi
- * /api/v1/cache:
- *   get:
- *     summary: Test route to fetch data from URL (not database) directly
+ * /api/v1/post/{wpSite}:
+ *   post:
+ *     summary: Create a new post in a WordPress site
  *     tags:
  *       - Posts
- * responses:
- *       200:
- *         description: Successful response with the requested data fetched
+ *     parameters:
+ *       - in: path
+ *         name: wpSite
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The WordPress site to post to
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 description: Title of the post.
+ *               content:
+ *                 type: string
+ *                 description: Content of the post.
+ *               status:
+ *                 type: string
+ *                 description: Status of the post (e.g., 'publish', 'draft', etc.).
+ *     responses:
+ *       201:
+ *         description: Post created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Post'
- *       404:
- *         description: Post not found
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Confirmation message.
+ *                 post:
+ *                   type: object
+ *                   description: Details of the created post.
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: The ID of the post
+ *                     title:
+ *                       type: string
+ *                       description: The title of the post
+ *                     content:
+ *                       type: string
+ *                       description: The content of the post
+ *                     date:
+ *                       type: string
+ *                       description: The date of the post
+ *                     link:
+ *                       type: string
+ *                       description: The post link
+ *       400:
+ *         description: Invalid input, e.g., missing required fields
+ *       401:
+ *         description: Unauthorized, missing or invalid credentials
  *       500:
  *         description: Internal server error
  */
 
-router.get('/cache', async (req, res) => {
-  try {
-    const data = await getDataFromCacheOrExternalAPI('characters', "https://rickandmortyapi.com/api/character");
-    res.status(200).json(data);
-  } catch (error) {
-    console.error('Error en la ruta:', error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
+router.post('/post/:wpSite', postsController.postPostById);
 
 
 export { router };

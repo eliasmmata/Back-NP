@@ -1,0 +1,2 @@
+### GET a list of all WordPress sites with categories from DB
+GET http://localhost:3001/api/v1/wpsites

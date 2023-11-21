@@ -23,12 +23,12 @@ const getMediaByPostId = (req, res) => {
                 res.json({ featured_media_id: featuredMediaId });
 
             } else {
-                res.status(response.status).json({ error: 'Failed to retrieve the post media' });
+                res.status(response.status).json({ message: 'Failed to retrieve the post media' });
             }
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).json({ error: 'An error occurred while fetching the post media' });
+            res.status(500).json({ message: 'An error occurred while fetching the post media', error: error.message });
         });
 };
 
@@ -60,11 +60,14 @@ const getFeaturedMediaDetails = (req, res) => {
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).json({ error: 'An error occurred while fetching featured media details' });
+            res.status(500).json({ message: 'An error occurred while fetching featured media details', error: error.message });
         });
 };
 
 
 
-export { getMediaByPostId, getFeaturedMediaDetails };
+export {
+    getMediaByPostId,
+    getFeaturedMediaDetails
+};
 

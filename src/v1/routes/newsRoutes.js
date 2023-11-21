@@ -1,4 +1,5 @@
 import express from 'express'
+const router = express.Router();
 
 // Import files
 import redisClient from '../../config/redisClient.js';
@@ -6,9 +7,6 @@ import redisClient from '../../config/redisClient.js';
 import * as newsController from "../../controllers/newsController.js";
 
 import { getDataFromCacheOrDB } from '../../utils/cacheUtils.js';
-
-
-const router = express.Router();
 
 // ----- GET --------------------------------------------------------------------
 

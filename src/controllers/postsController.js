@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Worpdress api package (Not used now)
@@ -18,48 +17,79 @@ const wpcom = WPCOM();
 
 // AXIOS Get All Post from a WP-site
 const getPostsList = (req, res) => {
-    const { wpSite } = req.params || 'bangstudio.es';
+    const { wpSite } = req.params || 'bangstudio.es';
     const apiUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
 
     axios
         .get(apiUrl)
         .then((response) => {
-            // Check if the request was successful (status code 200)
             if (response.status === 200) {
-                res.json(response.data); // Send the post data in the response
+                res.status(200).json(response.data);
             } else {
                 res.status(response.status).json({ error: 'Failed to retrieve the post' });
             }
         })
         .catch((error) => {
-            res.status(500).json({ error: 'An error occurred while fetching the post' });
+            res.status(500).json({ message: 'An error occurred while fetching the post', error: error.message });
         });
 };
-
 
 // AXIOS Get single post by Id
 const getPostById = (req, res) => {
     const postId = req.params.postId;
-    /* const apiUrl = `https://public-api.wordpress.com/rest/v1.1/sites/en.blog.wordpress.com/posts/${postId}`; */
     const wpUrl = req.query.wpUrl || 'bangstudio.es';
     const apiUrl = `https://${wpUrl}/wp-json/wp/v2/posts/${postId}`;
 
     axios
         .get(apiUrl)
         .then((response) => {
-            // Check if the request was successful (status code 200)
             if (response.status === 200) {
-                res.json(response.data); // Send the post data in the response
+                res.status(200).json(response.data);
             } else {
                 res.status(response.status).json({ error: 'Failed to retrieve the post' });
             }
         })
         .catch((error) => {
-            console.log('ENTRA O QUE ERROR??')
-            res.status(500).json({ error: 'An error occurred while fetching the post' });
+            res.status(500).json({ message: 'An error occurred while fetching the post', error: error.message });
+        });
+};
+
+// Insertar noticia en un wpSite
+const postPostById = (req, res) => {
+
+    const { wpSite } = req.params;
+    const apiUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+
+    // Detalles de la entrada del blog a crear
+    const nuevaEntrada = {
+        title: 'Título de la entrada',
+        content: 'Contenido de la entrada',
+        status: 'draft', // Cambia el estado según lo necesites: 'publish', 'draft', etc.
+    };
+
+    axios.post(apiUrl, nuevaEntrada, {
+        auth: {
+            username: 'eliasmmata',
+            password: 'V0fo zSAG yi25 bmyB ET09 QhCm',
+        },
+    })
+        .then((response) => {
+            if (response.status === 201 || response.status === 200) {
+                res.status(201).json({ message: 'Post created successfully', post: response.data });
+            } else {
+                res.status(response.status).json({ error: 'Failed to insert the post' });
+            }
+        })
+        .catch((error) => {
+            console.log('ENTRA O ERROR TEST POST??')
+            res.status(500).json({ message: 'An error occurred while posting the post', error: error });
         });
 };
 
 
-export { getPostsList, getPostById };
+export {
+    getPostsList,
+    getPostById,
+    postPostById
+};
 
