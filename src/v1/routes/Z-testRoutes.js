@@ -1,11 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-// Import files
-import * as postsController from '../../controllers/postsController.js'
-
 import { getDataFromCacheOrExternalAPI } from '../../utils/cacheUtils.js';
-
 
 // TEST ROUTE TO FETCH DATA FROM URL NOT DATABASE DIRECTLY
 

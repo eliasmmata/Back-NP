@@ -1,5 +1,0 @@
-
-### FETCH FROM AXIOS URL NOT DIRECTLY FROM DATABASE
-GET http://localhost:3001/api/v1/cache
-
-
