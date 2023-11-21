@@ -225,7 +225,7 @@ export const swaggerDocs = (app, port) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-  if (port !== 3001) {
+  if (process.env.RAILWAY_URL) {
     console.log(`🗒 Version 1 Docs are available on ${process.env.RAILWAY_URL}/api/v1/docs`);
   } else {
     console.log(`🗒 Version 1 Docs are available on http://localhost:${port}/api/v1/docs`);
