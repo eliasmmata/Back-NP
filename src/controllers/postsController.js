@@ -69,7 +69,7 @@ const postPostById = (req, res) => {
 
     axios.post(apiUrl, nuevaEntrada, {
         auth: {
-            username: 'eliasmmata',
+            name: 'Elias Moreno',
             password: 'V0fo zSAG yi25 bmyB ET09 QhCm',
         },
     })
