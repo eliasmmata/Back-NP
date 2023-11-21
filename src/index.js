@@ -17,8 +17,8 @@ import './database/database.js'
 import { router as wpsitesRoutes } from './v1/routes/wpsitesRoutes.js';
 import { router as postsRoutes } from './v1/routes/postsRoutes.js';
 import { router as mediaRoutes } from './v1/routes/mediaRoutes.js';
+import { router as newsRoutes } from './v1/routes/newsRoutes.js';
 
-/* import { router as newsRoutes } from './v1/routes/newsRoutes.js'; */
 
 // Express
 const app = express();
@@ -31,8 +31,7 @@ app.use(express.json())
 app.use("/api/v1", wpsitesRoutes)
 app.use("/api/v1", postsRoutes)
 app.use("/api/v1", mediaRoutes)
-
-/* app.use("/api/v1", newsRoutes) */
+app.use("/api/v1", newsRoutes)
 
 
 // Redirect from '/' to '/api/v1/docs' when root path is accessed

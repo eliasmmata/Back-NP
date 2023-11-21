@@ -56,9 +56,12 @@ const getPostById = (req, res) => {
 
 // Insertar noticia en un wpSite
 const postPostById = (req, res) => {
-
     const { wpSite } = req.params;
     const apiUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+
+    const username = 'Elias Moreno';
+    const password = 'V0fo zSAG yi25 bmyB ET09 QhCm';
+    const credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
     // Detalles de la entrada del blog a crear
     const nuevaEntrada = {
@@ -68,22 +71,24 @@ const postPostById = (req, res) => {
     };
 
     axios.post(apiUrl, nuevaEntrada, {
-        auth: {
-            name: 'Elias Moreno',
-            password: 'V0fo zSAG yi25 bmyB ET09 QhCm',
-        },
+        headers: {
+            'Authorization': `Basic ${credentials}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+            // Otros headers necesarios según la API de WordPress
+        }
     })
-        .then((response) => {
-            if (response.status === 201 || response.status === 200) {
-                res.status(201).json({ message: 'Post created successfully', post: response.data });
-            } else {
-                res.status(response.status).json({ error: 'Failed to insert the post' });
-            }
-        })
-        .catch((error) => {
-            console.log('ENTRA O ERROR TEST POST??')
-            res.status(500).json({ message: 'An error occurred while posting the post', error: error });
-        });
+    .then((response) => {
+        if (response.status === 201 || response.status === 200) {
+            res.status(201).json({ message: 'Post created successfully', post: response.data });
+        } else {
+            res.status(response.status).json({ error: 'Failed to insert the post' });
+        }
+    })
+    .catch((error) => {
+        console.log('ENTRA O ERROR TEST POST??')
+        res.status(500).json({ message: 'An error occurred while posting the post', error: error });
+    });
 };
 
 
