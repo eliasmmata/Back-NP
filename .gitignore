@@ -1,6 +1,7 @@
 #test files
 Z-*.md
 Z-*.json
+**/Z-*.js
 
 # Logs
 logs
@@ -101,3 +102,4 @@ yarn-error.log
 # Visual Studio Code
 .vscode/
 .settings/
+**/Z-*.js
