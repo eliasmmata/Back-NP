@@ -38,7 +38,7 @@ const options = {
     `${__dirname}/routes/wpsitesRoutes.js`,
     `${__dirname}/routes/postsRoutes.js`,
     `${__dirname}/routes/mediaRoutes.js`,
-    /* `${__dirname}/routes/newsRoutes.js`, */
+    `${__dirname}/routes/newsRoutes.js`,
 
    ],
   components: {
