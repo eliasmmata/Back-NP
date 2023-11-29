@@ -52,5 +52,41 @@ import * as wpsitesController from '../../controllers/wpsitesController.js'
 
 router.get('/wpsites/', wpsitesController.getWpSites);
 
+// ----- PUT --------------------------------------------------------------------
+/**
+ * @openapi
+ *  /api/v1/wpsites/{wpSite}:
+ *   put:
+ *     summary: Update the name of a WordPress site
+ *     tags:
+ *       - WordPress Sites
+ *     parameters:
+ *       - in: path
+ *         name: wpSite
+ *         required: true
+ *         description: ID of the WordPress site to update
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               wp_name:
+ *                 type: string
+ *                 description: New name for the WordPress site
+ *     responses:
+ *       200:
+ *         description: Successful update response
+ *       400:
+ *         description: Bad request or invalid data provided
+ *       404:
+ *         description: WordPress site not found
+ */
+
+router.put('/wpsites/:wpSite', wpsitesController.putWpSite);
+
 
 export { router };
