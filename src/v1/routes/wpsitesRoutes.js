@@ -54,6 +54,7 @@ import * as wpsitesController from '../../controllers/wpsitesController.js'
 router.get('/wpsites/', wpsitesController.getWpSites);
 
 // ----- PUT --------------------------------------------------------------------
+
 /**
  * @openapi
  *  /api/v1/wpsites/{wpSite}:
