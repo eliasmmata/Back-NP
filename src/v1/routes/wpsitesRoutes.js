@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import axios from 'axios';
 
 const router = express.Router();
@@ -86,7 +87,11 @@ router.get('/wpsites/', wpsitesController.getWpSites);
  *         description: WordPress site not found
  */
 
-router.put('/wpsites/:wpSite', wpsitesController.putWpSite);
-
+// Apply CORS middleware specifically to the PUT route for /wpsites/:wpSite
+router.put(
+    '/wpsites/:wpSite',
+    cors(), // Enable CORS for this route
+    wpsitesController.putWpSite
+  );
 
 export { router };

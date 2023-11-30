@@ -41,13 +41,14 @@ const getWpSites = async (req, res) => {
 
 // AXIOS Modify name to a existent WP-site
 const putWpSite = async (req, res) => {
+
     const connection = await connect();
+
     try {
-
-
         const wp_id  = req.params.wpSite; // Assuming the ID of the WordPress site to update is in the URL parameter
-        console.log('wp_id', wp_id);
         const { wp_name } = req.body; // New name for the WordPress site from the request body
+
+        console.log('wp_id', wp_id);
         console.log('wp_name', wp_name);
 
         // Ensure that wp_name exists in the request body
@@ -63,7 +64,7 @@ const putWpSite = async (req, res) => {
 
         await connection.query(updateQuery, updateParams);
 
-        res.status(200).json({ message: 'WordPress site name updated successfully' });
+        res.status(200).json({ message: 'Wp site name updated' });
     } catch (error) {
         res.status(500).json({ error: 'Error updating WordPress site name' });
         throw error;
