@@ -2,7 +2,7 @@
 import { connect } from "../database/database.js"
 import wpSitesQueries from "../database/queries/wpsitesQueries.js";
 
-// AXIOS Get All Post from a WP-site
+// Get All Post from a WP-site
 const getWpSites = async (req, res) => {
     const connection = await connect();
 
@@ -39,13 +39,39 @@ const getWpSites = async (req, res) => {
     }
 };
 
+// Create new WP-site
+const postWpSite = async (req, res) => {
+    const connection = await connect();
+
+    try {
+      const { name, api_url } = req.body;
+
+      if (!name || !api_url) {
+        return res.status(400).json({ error: 'Name or API URL not provided' });
+      }
+
+      const query = wpSitesQueries.wpNewSite
+            .replace('?', `"${name}"`)
+            .replace('?', `"${api_url}"`);
+
+      await connection.query(query);
+
+      res.status(201).json({ message: 'WordPress site created successfully' });
+    } catch (error) {
+      console.error('Error creating new WordPress site:', error);
+      res.status(500).json({ error: 'Error creating new WordPress site' });
+    } finally {
+      connection.release();
+    }
+  };
+
 // AXIOS Modify name to a existent WP-site
 const putWpSite = async (req, res) => {
 
     const connection = await connect();
 
     try {
-        const wp_id  = req.params.wpSite; // Assuming the ID of the WordPress site to update is in the URL parameter
+        const wp_id  = req.params.wpSiteId; // Assuming the ID of the WordPress site to update is in the URL parameter
         const { wp_name } = req.body; // New name for the WordPress site from the request body
 
         console.log('wp_id', wp_id);
@@ -56,13 +82,11 @@ const putWpSite = async (req, res) => {
             return res.status(400).json({ error: 'wp_id or New wp_name not provided' });
         }
 
-        // AÑADIR Y QUITAR LA QUERY DE AQUÍ
-        /* const query = wpSitesQueries.wpupdateName; */
+        const query = wpSitesQueries.wpUpdateName
+            .replace('?', `"${wp_name}"`) // Replace the first placeholder with wp_name
+            .replace('?', wp_id); // Replace the second placeholder with wp_id
 
-        const updateQuery = `UPDATE wordpress SET name = "${wp_name}" WHERE wordpress_id = ${wp_id}`;
-        const updateParams = [wp_name, wp_id]; // Assuming wp_id is used for identifying the site
-
-        await connection.query(updateQuery, updateParams);
+        await connection.query(query);
 
         res.status(200).json({ message: 'Wp site name updated' });
     } catch (error) {
@@ -76,6 +100,7 @@ const putWpSite = async (req, res) => {
 
 export {
     getWpSites,
-    putWpSite
+    putWpSite,
+    postWpSite
 };
 

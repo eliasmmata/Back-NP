@@ -53,7 +53,44 @@ import * as wpsitesController from '../../controllers/wpsitesController.js'
 
 router.get('/wpsites/', wpsitesController.getWpSites);
 
+// ----- POST --------------------------------------------------------------------
+
+// Crear nuevo registro de Worpdress activo en BBDD
+
+
+/**
+ * @openapi
+ * /api/v1/wpsite:
+ *   post:
+ *     summary: Create a new WordPress site entry
+ *     tags:
+ *       - WordPress Sites
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *                name:
+ *                  type: string
+ *                  description: Name of the WordPress site
+ *                api_url:
+ *                  type: string
+ *                  description: API URL of the site
+ *     responses:
+ *       201:
+ *         description: WordPress site created successfully
+ *       400:
+ *         description: Invalid input, missing fields, or incorrect data
+ */
+
+router.post('/wpsite/', wpsitesController.postWpSite);
+
+
 // ----- PUT --------------------------------------------------------------------
+
+// Modificar nombre de sitio Wp exitente (Aplicando CORS middleware)
 
 /**
  * @openapi
@@ -88,11 +125,10 @@ router.get('/wpsites/', wpsitesController.getWpSites);
  *         description: WordPress site not found
  */
 
-// Apply CORS middleware specifically to the PUT route for /wpsites/:wpSite
 router.put(
-    '/wpsites/:wpSite',
+    '/wpsites/:wpSiteId',
     cors(), // Enable CORS for this route
     wpsitesController.putWpSite
-  );
+);
 
 export { router };

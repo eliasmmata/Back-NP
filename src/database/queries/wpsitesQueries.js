@@ -6,8 +6,21 @@ const wpSitesWithCategories = `
                                 LEFT JOIN category ON wordpress.wordpress_id = category.wordpress_wordpress_id;
                                 `;
 
-// Other queries related to WordPress sites can be added here
+const wpNewSite = `
+                    INSERT INTO
+                    wordpress (name, api_url)
+                    VALUES (?, ?)
+                    `;
+
+
+const wpUpdateName = `
+                        UPDATE
+                        wordpress SET name = ?
+                        WHERE wordpress_id = ?
+                    `;
 
 export default {
     wpSitesWithCategories,
+    wpNewSite,
+    wpUpdateName
 };

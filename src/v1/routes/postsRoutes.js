@@ -10,7 +10,7 @@ import * as postsController from '../../controllers/postsController.js'
 
 /**
  * @openapi
- * /api/v1/posts/{wpSite}:
+ * /api/v1/posts/{wpsiteName}:
  *   get:
  *     summary: Get a list of all posts from a specific url WordPress site
  *     tags:
@@ -188,7 +188,7 @@ router.get('/post/:postId', postsController.getPostById);
 
 /**
  * @openapi
- * /api/v1/post/{wpSite}:
+ * /api/v1/post/{wpsiteName}:
  *   post:
  *     summary: Create a new post in a WordPress site (with attached images)
  *     tags:
