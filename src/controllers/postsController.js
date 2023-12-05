@@ -81,8 +81,26 @@ const postPostById = (req, res) => {
             const nuevaEntrada = {
                 title: 'Test IMAGEN 2 Título de la entrada',
                 content: 'Test Contenido de la entrada',
+                author:	'The ID for the author of the post',
                 featured_media: featuredMediaId,
+                /* status choose -> publish, future, draft, pending, private */
                 status: 'draft',
+                date:	'The date the post was published, in the sites timezone',
+                date_gmt:	'The date the post was published, as GMT.',
+                slug:	'An alphanumeric identifier for the post unique to its type.',
+                password:	'A password to protect access to the content and excerpt.',
+                excerpt:	'The excerpt for the post.',
+                /* comment_status choose -> open, close */
+                comment_status:	'open',
+                /* ping_status choose -> open, close */
+                ping_status: 'open',
+                /* format choose -> standard, aside, chat, gallery, link, image, quote, status, video, audio*/
+                format:	'standard',
+                meta:	'Meta fields.',
+                sticky:	'Whether or not the post should be treated as sticky.',
+                template:	'The theme file to use to display the post.',
+                categories:	'The terms assigned to the post in the category taxonomy.',
+                tags:	'The terms assigned to the post in the post_tag taxonomy.'
             };
 
             return axios.post(wordpressApiPostUrl, nuevaEntrada, {

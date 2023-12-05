@@ -44,7 +44,7 @@ const postWpSite = async (req, res) => {
     const connection = await connect();
 
     try {
-      const { name, api_url } = req.body;
+      const { wp_name: name, api_url } = req.body;
 
       if (!name || !api_url) {
         return res.status(400).json({ error: 'Name or API URL not provided' });

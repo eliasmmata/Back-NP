@@ -185,7 +185,6 @@ router.get('/post/:postId', postsController.getPostById);
 // ----- POST --------------------------------------------------------------------
 
 // To another wpSite
-
 /**
  * @openapi
  * /api/v1/post/{wpsiteName}:
@@ -195,7 +194,7 @@ router.get('/post/:postId', postsController.getPostById);
  *       - Posts
  *     parameters:
  *       - in: path
- *         name: wpSite
+ *         name: wpsiteName
  *         required: true
  *         schema:
  *           type: string
@@ -216,6 +215,55 @@ router.get('/post/:postId', postsController.getPostById);
  *               status:
  *                 type: string
  *                 description: Status of the post (e.g., 'publish', 'draft', etc.).
+ *               author:
+ *                 type: string
+ *                 description: The ID for the author of the post.
+ *               featured_media:
+ *                 type: string
+ *                 description: ID for the featured media of the post.
+ *               date:
+ *                 type: string
+ *                 description: The date the post was published, in the site's timezone.
+ *               date_gmt:
+ *                 type: string
+ *                 description: The date the post was published, as GMT.
+ *               slug:
+ *                 type: string
+ *                 description: An alphanumeric identifier for the post unique to its type.
+ *               password:
+ *                 type: string
+ *                 description: A password to protect access to the content and excerpt.
+ *               excerpt:
+ *                 type: string
+ *                 description: The excerpt for the post.
+ *               comment_status:
+ *                 type: string
+ *                 description: Comment status ('open' or 'closed').
+ *               ping_status:
+ *                 type: string
+ *                 description: Ping status ('open' or 'closed').
+ *               format:
+ *                 type: string
+ *                 description: Format ('standard', 'aside', 'chat', 'gallery', 'link', 'image', 'quote', 'status', 'video', 'audio').
+ *               meta:
+ *                 type: string
+ *                 description: Meta fields.
+ *               sticky:
+ *                 type: boolean
+ *                 description: Whether or not the post should be treated as sticky.
+ *               template:
+ *                 type: string
+ *                 description: The theme file to use to display the post.
+ *               categories:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: The terms assigned to the post in the category taxonomy.
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: The terms assigned to the post in the post_tag taxonomy.
  *     responses:
  *       201:
  *         description: Post created successfully
