@@ -53,7 +53,6 @@ const postPostById = (req, res) => {
     const password = 'V0fo zSAG yi25 bmyB ET09 QhCm';
     const credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
-
     /* const imageUrl = 'https://bangstudio.es/wp-json/wp/v2/media/262481'; */
     const imageUrl = 'https://bangstudio.es/wp-content/uploads/2021/07/tecnicas-personalizar-zapatillas-entrada.jpeg'; // Replace with your image URL
 
@@ -79,28 +78,29 @@ const postPostById = (req, res) => {
             const featuredMediaId = uploadResponse.data.id;
 
             const nuevaEntrada = {
-                title: 'Test IMAGEN 2 Título de la entrada',
-                content: 'Test Contenido de la entrada',
-                author:	'The ID for the author of the post',
+                /* date:	"2023-12-05T21:20:40", */
+                /* date_gmt:	"2023-12-05T19:20:40", */
+                /* slug:	"test-imagen-3-titulo-de-la-entrada", */
+                // status choose -> publish, future, draft, pending, private
+                status: "publish",
+                title: "Test IMAGEN 3 Título de la entrada",
+                content: "Test Contenido de la entrada",
+                excerpt:	"Resumen breve del post.",
+                /* author:	1, */
                 featured_media: featuredMediaId,
-                /* status choose -> publish, future, draft, pending, private */
-                status: 'draft',
-                date:	'The date the post was published, in the sites timezone',
-                date_gmt:	'The date the post was published, as GMT.',
-                slug:	'An alphanumeric identifier for the post unique to its type.',
-                password:	'A password to protect access to the content and excerpt.',
-                excerpt:	'The excerpt for the post.',
-                /* comment_status choose -> open, close */
-                comment_status:	'open',
-                /* ping_status choose -> open, close */
-                ping_status: 'open',
-                /* format choose -> standard, aside, chat, gallery, link, image, quote, status, video, audio*/
-                format:	'standard',
-                meta:	'Meta fields.',
-                sticky:	'Whether or not the post should be treated as sticky.',
-                template:	'The theme file to use to display the post.',
-                categories:	'The terms assigned to the post in the category taxonomy.',
-                tags:	'The terms assigned to the post in the post_tag taxonomy.'
+                // comment_status choose -> open, close
+                comment_status:	"open",
+                // ping_status choose -> open, close
+                /* ping_status: "closed", */
+                /* sticky:	false, */
+                // template: The theme file to use to display the post,
+                /* template: "", */
+                // format choose -> standard, aside, chat, gallery, link, image, quote, status, video, audio
+                format:	"standard",
+                /* password:	"A password to protect access to the content and excerpt.", */
+                /* meta:	"Meta fields", */
+                categories:	[1],
+                tags: []
             };
 
             return axios.post(wordpressApiPostUrl, nuevaEntrada, {

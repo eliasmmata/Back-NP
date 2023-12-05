@@ -94,14 +94,14 @@ router.post('/wpsite/', wpsitesController.postWpSite);
 
 /**
  * @openapi
- *  /api/v1/wpsites/{wpSite}:
+ *  /api/v1/wpsites/{wpSiteId}:
  *   put:
  *     summary: Update the name of a WordPress site
  *     tags:
  *       - WordPress Sites
  *     parameters:
  *       - in: path
- *         name: wpSite
+ *         name: wpSiteId
  *         required: true
  *         description: ID of the WordPress site to update
  *         schema:

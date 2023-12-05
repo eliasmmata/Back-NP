@@ -219,7 +219,7 @@ router.get('/post/:postId', postsController.getPostById);
  *                 type: string
  *                 description: The ID for the author of the post.
  *               featured_media:
- *                 type: string
+ *                 type: integer
  *                 description: ID for the featured media of the post.
  *               date:
  *                 type: string
