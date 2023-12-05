@@ -4,7 +4,8 @@ import fs from 'fs';
 
 // Get All Post from a WP-site
 const getPostsList = (req, res) => {
-    const { wpSite } = req.params || 'bangstudio.es';
+
+    const { wpSite } = req.params || "bangstudio.es";
     const wordpressApiUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
 
     axios
@@ -23,8 +24,9 @@ const getPostsList = (req, res) => {
 
 // Get single post by Id from a WP-site
 const getPostById = (req, res) => {
+
     const postId = req.params.postId;
-    const wpUrl = req.query.wpUrl || 'bangstudio.es';
+    const wpUrl = req.query.wpUrl || "bangstudio.es";
     const wordpressApiUrl = `https://${wpUrl}/wp-json/wp/v2/posts/${postId}`;
 
     axios
@@ -77,31 +79,10 @@ const postPostById = (req, res) => {
 
             const featuredMediaId = uploadResponse.data.id;
 
-            const nuevaEntrada = {
-                /* date:	"2023-12-05T21:20:40", */
-                /* date_gmt:	"2023-12-05T19:20:40", */
-                /* slug:	"test-imagen-3-titulo-de-la-entrada", */
-                // status choose -> publish, future, draft, pending, private
-                status: "publish",
-                title: "Test IMAGEN 3 Título de la entrada",
-                content: "Test Contenido de la entrada",
-                excerpt:	"Resumen breve del post.",
-                /* author:	1, */
-                featured_media: featuredMediaId,
-                // comment_status choose -> open, close
-                comment_status:	"open",
-                // ping_status choose -> open, close
-                /* ping_status: "closed", */
-                /* sticky:	false, */
-                // template: The theme file to use to display the post,
-                /* template: "", */
-                // format choose -> standard, aside, chat, gallery, link, image, quote, status, video, audio
-                format:	"standard",
-                /* password:	"A password to protect access to the content and excerpt.", */
-                /* meta:	"Meta fields", */
-                categories:	[1],
-                tags: []
-            };
+            const nuevaEntrada = req.body;
+
+            // Meter featuredMediaId en el objeto
+            nuevaEntrada.featured_media = featuredMediaId;
 
             return axios.post(wordpressApiPostUrl, nuevaEntrada, {
                 headers: {

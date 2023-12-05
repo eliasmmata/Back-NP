@@ -22,6 +22,9 @@ import * as mediaController from '../../controllers/mediaController.js'
  *         schema:
  *           type: integer
  *         description: The ID of the post for which to retrieve attached media
+ *       - in: query
+ *         name: wpUrl
+ *         required: false
  *     responses:
  *       200:
  *         description: Successful response with the media attached to the specified post
@@ -53,6 +56,9 @@ router.get('/media/:postId', mediaController.getMediaByPostId);
  *         schema:
  *           type: integer
  *         description: The ID of the featured_media item for which to retrieve details
+ *       - in: query
+ *         name: wpUrl
+ *         required: false
  *     responses:
  *       200:
  *         description: Successful response with the details of the specified featured_media item

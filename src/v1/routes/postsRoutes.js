@@ -6,7 +6,7 @@ import * as postsController from '../../controllers/postsController.js'
 
 // ----- GET --------------------------------------------------------------------
 
-// All Posts from a wpSite
+// Get All Posts from a wpSite
 
 /**
  * @openapi
@@ -45,7 +45,7 @@ import * as postsController from '../../controllers/postsController.js'
 
 router.get('/posts/:wpSite', postsController.getPostsList);
 
-// Single Post by ID
+// Get Single Post by ID
 
 /**
  * @openapi
@@ -184,7 +184,8 @@ router.get('/post/:postId', postsController.getPostById);
 
 // ----- POST --------------------------------------------------------------------
 
-// To another wpSite
+// Post new entry to a wpSite
+
 /**
  * @openapi
  * /api/v1/post/{wpsiteName}:
@@ -206,63 +207,63 @@ router.get('/post/:postId', postsController.getPostById);
  *           schema:
  *             type: object
  *             properties:
- *               title:
- *                 type: string
- *                 description: Title of the post.
- *               content:
- *                 type: string
- *                 description: Content of the post.
- *               status:
- *                 type: string
- *                 description: Status of the post (e.g., 'publish', 'draft', etc.).
- *               author:
- *                 type: string
- *                 description: The ID for the author of the post.
- *               featured_media:
- *                 type: integer
- *                 description: ID for the featured media of the post.
  *               date:
  *                 type: string
- *                 description: The date the post was published, in the site's timezone.
+ *                 example: "2023-12-05T22:03:09 (Lo crea solo)"
  *               date_gmt:
  *                 type: string
- *                 description: The date the post was published, as GMT.
+ *                 example: "2023-12-05T22:03:09 (Lo crea solo)"
  *               slug:
  *                 type: string
- *                 description: An alphanumeric identifier for the post unique to its type.
- *               password:
+ *                 example: "lo coge del title por defecto (titulo-del-post)"
+ *               status:
  *                 type: string
- *                 description: A password to protect access to the content and excerpt.
+ *                 example: "Estado de la entrada (e.g., 'publish', 'draft', etc.)"
+ *               title:
+ *                 type: string
+ *                 example: "Título del post"
+ *               content:
+ *                 type: string
+ *                 example: "Contenido del post."
  *               excerpt:
  *                 type: string
- *                 description: The excerpt for the post.
+ *                 example: "Breve Resumen del post (OJO-> Abajo AUTOR ID LO COGE POR username y password)"
+ *               author:
+ *                 type: integer
+ *                 example: 1
+ *               featured_media:
+ *                 type: integer
+ *                 example: 9999
  *               comment_status:
  *                 type: string
- *                 description: Comment status ('open' or 'closed').
+ *                 example: "Estado de comentarios ('open' or 'closed')"
  *               ping_status:
  *                 type: string
- *                 description: Ping status ('open' or 'closed').
- *               format:
- *                 type: string
- *                 description: Format ('standard', 'aside', 'chat', 'gallery', 'link', 'image', 'quote', 'status', 'video', 'audio').
- *               meta:
- *                 type: string
- *                 description: Meta fields.
+ *                 example: "Estado del Ping ('open' or 'closed')"
  *               sticky:
  *                 type: boolean
- *                 description: Whether or not the post should be treated as sticky.
+ *                 example: false
  *               template:
  *                 type: string
- *                 description: The theme file to use to display the post.
+ *                 example: "The theme file to use to display the post (por defecto vacío)"
+ *               format:
+ *                 type: string
+ *                 example: "Formato ('standard', 'aside', 'chat', 'gallery', 'link', 'image', 'quote', 'status', 'video', 'audio')"
+ *               password:
+ *                 type: string
+ *                 example: "password to protect access to the content and excerpt."
+ *               meta:
+ *                 type: string
+ *                 example: "Meta fields"
  *               categories:
  *                 type: array
  *                 items:
- *                   type: string
+ *                   type: integer
  *                 description: The terms assigned to the post in the category taxonomy.
  *               tags:
  *                 type: array
  *                 items:
- *                   type: string
+ *                   type: integer
  *                 description: The terms assigned to the post in the post_tag taxonomy.
  *     responses:
  *       201:

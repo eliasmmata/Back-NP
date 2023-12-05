@@ -7,7 +7,10 @@ const wpcom = WPCOM();
 // AXIOS Get Media ID (feature_media) by PostID
 const getMediaByPostId = (req, res) => {
     const postId = req.params.postId;
-    const apiUrl = `https://bangstudio.es/wp-json/wp/v2/posts/${postId}`;
+
+    const wpSite = req.query.wpUrl || "vesaniamoda.es";
+
+    const apiUrl = `https://${wpSite}/wp-json/wp/v2/posts/${postId}`;
 
     axios
         .get(apiUrl)
@@ -36,8 +39,9 @@ const getMediaByPostId = (req, res) => {
 const getFeaturedMediaDetails = (req, res) => {
     const featuredMediaId = req.params.featuredMediaId;
 
-    console.log('featuredMediaId', featuredMediaId);
-    const apiUrl = `https://bangstudio.es/wp-json/wp/v2/media/${featuredMediaId}`;
+    const wpSite = req.query.wpUrl || "vesaniamoda.es";
+
+    const apiUrl = `https://${wpSite}/wp-json/wp/v2/media/${featuredMediaId}`;
 
     axios
         .get(apiUrl)

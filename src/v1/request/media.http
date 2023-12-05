@@ -1,5 +1,5 @@
 ### featured_media ID BY SINGLE POST ID
-GET http://localhost:3001/api/v1/media/258623
+GET http://localhost:3001/api/v1/media/283631
 
 ### MEDIA info BY featured_media ID
-GET http://localhost:3001/api/v1/media/data/262528
+GET http://localhost:3001/api/v1/media/data/283630
