@@ -49,31 +49,32 @@ const postPostById = (req, res) => {
     const { wpSite } = req.params;
 
     const nuevaEntrada = req.body;
+    const imageUrl = req.body.imageUrl;
 
     const authHeader = req.headers['authorization'];
 
-    let credentials = '';
-
-    if (authHeader) {
-        const [username, ...passwordParts] = authHeader.split(':');
-        const password = passwordParts.join(':').trim();
-        credentials = Buffer.from(`${username}:${password}`).toString('base64');
-      } else {
-        console.log('No se encontró el header de Authorization en la solicitud.');
-      }
-
     let wordpressApiMediaUrl = '';
     let wordpressApiPostUrl = '';
+    let credentials = '';
+    let nombreArchivoImagen = ''
 
     if (wpSite) {
         wordpressApiMediaUrl = `https://${wpSite}/wp-json/wp/v2/media`;
         wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
     } else {
         console.log('No se encontró la url del Sitio Wordpress');
+        return res.status(400).json({ error: 'No se reconoció la url del Sitio Wordpress' });
     }
 
-    const imageUrl = req.body.imageUrl;
-    let nombreArchivoImagen = ''
+    if (authHeader) {
+        const [username, ...passwordParts] = authHeader.split(':');
+        const password = passwordParts.join(':').trim();
+        credentials = Buffer.from(`${username}:${password}`).toString('base64');
+      } else {
+        console.log('No se encontró o reconoció Authorization header en la solicitud.');
+        return res.status(401).json({ error: 'No se reconocieron o introdujeron credenciales correctas' });
+      }
+
 
     if (imageUrl) {
         const partesURL = imageUrl.split('/');
@@ -82,6 +83,7 @@ const postPostById = (req, res) => {
         delete nuevaEntrada.imageUrl;
     } else {
         console.log('No se encontró url de imagen para adjuntar');
+        return res.status(400).json({ error: 'No se encontró url de imagen para adjuntar' });
     }
 
     axios
@@ -123,7 +125,8 @@ const postPostById = (req, res) => {
         })
         .then((response) => {
             if (response.status === 201 || response.status === 200) {
-                res.status(201).json({ message: 'New post created with the uploaded image as the featured image', post: response.data });
+                console.log('Nuevo post creado con éxito con imagen adjunta subida al sitio');
+                res.status(201).json({ message: 'Nuevo post creado con éxito con imagen adjunta subida al sitio', post: response.data });
             } else {
                 res.status(response.status).json({ error: 'Failed to insert the post' });
             }
