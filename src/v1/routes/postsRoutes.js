@@ -188,17 +188,17 @@ router.get('/post/:postId', postsController.getPostById);
 
 /**
  * @openapi
- * /api/v1/post/{wpsiteName}:
+ * /api/v1/post/{wpSiteId}:
  *   post:
  *     summary: Create a new post in a WordPress site
  *     tags:
  *       - Posts
  *     parameters:
  *       - in: path
- *         name: wpsiteName
+ *         name: wpSiteId
  *         required: true
  *         schema:
- *           type: string
+ *           type: number
  *         description: The WordPress site to post to
  *     requestBody:
  *       required: true
@@ -275,26 +275,36 @@ router.get('/post/:postId', postsController.getPostById);
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Confirmation message.
+ *                   example: Nuevo post creado con éxito
  *                 post:
  *                   type: object
  *                   description: Details of the created post.
  *                   properties:
+ *                     date:
+ *                       type: string
+ *                       example: The date of the post
+ *                     date_gmt:
+ *                       type: string
+ *                       example: The date the post was published, as GMT
+ *                     slug:
+ *                       type: string
+ *                       example: An alphanumeric identifier for the post unique to its type
+ *                     status:
+ *                       type: string
+ *                       example: A named status for the post ... publish, future, draft, pending, private
+ *                       enum: [publish, future, draft, pending, private]
  *                     id:
  *                       type: integer
  *                       description: The ID of the post
  *                     title:
  *                       type: string
- *                       description: The title of the post
+ *                       example: The title of the post
  *                     content:
  *                       type: string
- *                       description: The content of the post
- *                     date:
- *                       type: string
- *                       description: The date of the post
+ *                       example: The content of the post
  *                     link:
  *                       type: string
- *                       description: The post link
+ *                       example: The post link
  *       400:
  *         description: Invalid input, e.g., missing required fields
  *       401:
@@ -303,7 +313,7 @@ router.get('/post/:postId', postsController.getPostById);
  *         description: Internal server error
  */
 
-router.post('/post/:wpSite', postsController.postPostById);
+router.post('/post/:wpSiteId', postsController.postPostById);
 
 
 export { router };
