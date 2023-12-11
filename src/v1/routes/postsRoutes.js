@@ -190,7 +190,7 @@ router.get('/post/:postId', postsController.getPostById);
  * @openapi
  * /api/v1/post/{wpsiteName}:
  *   post:
- *     summary: Create a new post in a WordPress site (with attached images)
+ *     summary: Create a new post in a WordPress site
  *     tags:
  *       - Posts
  *     parameters:

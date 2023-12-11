@@ -62,7 +62,7 @@ router.get('/wpsites/', wpsitesController.getWpSites);
  * @openapi
  * /api/v1/wpsite:
  *   post:
- *     summary: Create a new WordPress site entry
+ *     summary: Create a new WordPress site entry (FRONTEND)
  *     tags:
  *       - WordPress Sites
  *     requestBody:
@@ -96,7 +96,7 @@ router.post('/wpsite/', wpsitesController.postWpSite);
  * @openapi
  *  /api/v1/wpsites/{wpSiteId}:
  *   put:
- *     summary: Update the name of a WordPress site
+ *     summary: Update the name of a WordPress site (FRONTEND)
  *     tags:
  *       - WordPress Sites
  *     parameters:

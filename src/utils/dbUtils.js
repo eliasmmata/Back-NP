@@ -27,4 +27,18 @@ async function getTotalItemCountFromDatabase() {
     }
 }
 
-export { fetchDataFromDatabase, getTotalItemCountFromDatabase };
+// Function to fetch the total count of news from the database
+async function getWpSiteId(wordpress_id) {
+    const connection = await connect();
+    try {
+        const query = `SELECT wordpress_id, name, api_url FROM wordpress WHERE wordpress_id = "${wordpress_id}"`;
+
+        const [rows] = await connection.query(query);
+
+        return rows[0];
+    } catch (error) {
+        throw new Error('Error fetching Wp Site Id from the database');
+    }
+}
+
+export { fetchDataFromDatabase, getTotalItemCountFromDatabase, getWpSiteId };
