@@ -48,22 +48,48 @@ const postPostById = (req, res) => {
 
     const { wpSite } = req.params;
 
-    const wordpressApiMediaUrl = `https://${wpSite}/wp-json/wp/v2/media`;
-    const wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+    const nuevaEntrada = req.body;
 
-    const username = 'Elias Moreno';
-    const password = 'V0fo zSAG yi25 bmyB ET09 QhCm';
-    const credentials = Buffer.from(`${username}:${password}`).toString('base64');
+    const authHeader = req.headers['authorization'];
 
-    /* const imageUrl = 'https://bangstudio.es/wp-json/wp/v2/media/262481'; */
-    const imageUrl = 'https://bangstudio.es/wp-content/uploads/2021/07/tecnicas-personalizar-zapatillas-entrada.jpeg'; // Replace with your image URL
+    let credentials = '';
+
+    if (authHeader) {
+        const [username, ...passwordParts] = authHeader.split(':');
+        const password = passwordParts.join(':').trim();
+        credentials = Buffer.from(`${username}:${password}`).toString('base64');
+      } else {
+        console.log('No se encontró el header de Authorization en la solicitud.');
+      }
+
+    let wordpressApiMediaUrl = '';
+    let wordpressApiPostUrl = '';
+
+    if (wpSite) {
+        wordpressApiMediaUrl = `https://${wpSite}/wp-json/wp/v2/media`;
+        wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+    } else {
+        console.log('No se encontró la url del Sitio Wordpress');
+    }
+
+    const imageUrl = req.body.imageUrl;
+    let nombreArchivoImagen = ''
+
+    if (imageUrl) {
+        const partesURL = imageUrl.split('/');
+        nombreArchivoImagen = partesURL[partesURL.length - 1]
+        // Remove the 'imageUrl' property from the object (no lo queremos añadir al post)
+        delete nuevaEntrada.imageUrl;
+    } else {
+        console.log('No se encontró url de imagen para adjuntar');
+    }
 
     axios
         .get(imageUrl, { responseType: 'arraybuffer' })
         .then((response) => {
             // Convert image to buffer
             const imageData = Buffer.from(response.data, 'binary');
-             fs.writeFileSync('Z-image.jpeg', imageData);
+            fs.writeFileSync(`${nombreArchivoImagen}`, imageData);
 
             // Upload the image to WordPress media library
             return axios.post(wordpressApiMediaUrl, imageData, {
@@ -71,17 +97,19 @@ const postPostById = (req, res) => {
                     'Authorization': `Basic ${credentials}`,
                     'Content-Type': 'image/jpeg',
                     'Accept': 'image/jpeg',
-                    'Content-Disposition': 'attachment; filename="Z-image.jpeg"',
+                    'Content-Disposition': `attachment; filename="${nombreArchivoImagen}"`,
                 }
             });
         })
         .then((uploadResponse) => {
 
+            // Eliminar el archivo de imagen descargado después de haberlo subido al sitio wp
+            fs.unlinkSync(`${nombreArchivoImagen}`);
+
+            // Id de la imagen asociada al post
             const featuredMediaId = uploadResponse.data.id;
 
-            const nuevaEntrada = req.body;
-
-            // Meter featuredMediaId en el objeto
+            // Añadir featuredMediaId en el objeto nuevaEntrada
             nuevaEntrada.featured_media = featuredMediaId;
 
             return axios.post(wordpressApiPostUrl, nuevaEntrada, {
@@ -94,7 +122,6 @@ const postPostById = (req, res) => {
             });
         })
         .then((response) => {
-
             if (response.status === 201 || response.status === 200) {
                 res.status(201).json({ message: 'New post created with the uploaded image as the featured image', post: response.data });
             } else {
@@ -105,7 +132,6 @@ const postPostById = (req, res) => {
             res.status(500).json({ message: 'An error occurred while posting the post', error: error });
         });
 };
-
 
 export {
     getPostsList,
