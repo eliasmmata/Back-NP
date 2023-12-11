@@ -31,7 +31,7 @@ async function getTotalItemCountFromDatabase() {
 async function getWpSiteId(wordpress_id) {
     const connection = await connect();
     try {
-        const query = `SELECT wordpress_id, name, api_url FROM wordpress WHERE wordpress_id = "${wordpress_id}"`;
+        const query = `SELECT wordpress_id, name, api_url, username, password FROM wordpress WHERE wordpress_id = "${wordpress_id}"`;
 
         const [rows] = await connection.query(query);
 

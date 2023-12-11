@@ -1,4 +1,6 @@
 
+import bcrypt from 'bcrypt';
+
 import { connect } from "../database/database.js"
 import wpSitesQueries from "../database/queries/wpsitesQueries.js";
 
@@ -44,26 +46,35 @@ const postWpSite = async (req, res) => {
     const connection = await connect();
 
     try {
-      const { wp_name: name, api_url } = req.body;
+        const { wp_name: name, api_url, username, password } = req.body;
 
-      if (!name || !api_url) {
-        return res.status(400).json({ error: 'Name or API URL not provided' });
-      }
+        if (!name || !api_url) {
+            return res.status(400).json({ error: 'Name or API URL not provided' });
+        }
 
-      const query = wpSitesQueries.wpNewSite
+        if (!name || !api_url || !username || !password) {
+            return res.status(400).json({ error: 'Name, API URL, username, or password not provided' });
+        }
+
+        // Hashea la contraseña utilizando bcrypt antes de guardarla en la base de datos
+        const hashedPassword = await bcrypt.hash(password, 5); // Ajusta el número de rondas según tu preferencia
+
+        const query = wpSitesQueries.wpNewSite
             .replace('?', `"${name}"`)
-            .replace('?', `"${api_url}"`);
+            .replace('?', `"${api_url}"`)
+            .replace('?', `"${username}"`)
+            .replace('?', `"${hashedPassword}"`)
 
-      await connection.query(query);
+        await connection.query(query);
 
-      res.status(201).json({ message: 'WordPress site created successfully' });
+        res.status(201).json({ message: 'WordPress site created successfully' });
     } catch (error) {
-      console.error('Error creating new WordPress site:', error);
-      res.status(500).json({ error: 'Error creating new WordPress site' });
+        console.error('Error creating new WordPress site:', error);
+        res.status(500).json({ error: 'Error creating new WordPress site' });
     } finally {
-      connection.release();
+        connection.release();
     }
-  };
+};
 
 // AXIOS Modify name to a existent WP-site
 const putWpSite = async (req, res) => {
@@ -71,7 +82,7 @@ const putWpSite = async (req, res) => {
     const connection = await connect();
 
     try {
-        const wp_id  = req.params.wpSiteId; // Assuming the ID of the WordPress site to update is in the URL parameter
+        const wp_id = req.params.wpSiteId; // Assuming the ID of the WordPress site to update is in the URL parameter
         const { wp_name } = req.body; // New name for the WordPress site from the request body
 
         console.log('wp_id', wp_id);

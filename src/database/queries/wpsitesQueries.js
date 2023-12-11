@@ -8,8 +8,8 @@ const wpSitesWithCategories = `
 
 const wpNewSite = `
                     INSERT INTO
-                    wordpress (name, api_url)
-                    VALUES (?, ?)
+                    wordpress (name, api_url, username, password)
+                    VALUES (?, ?, ?, ?)
                     `;
 
 
