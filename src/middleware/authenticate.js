@@ -3,33 +3,36 @@ const authenticateToken = (req, res, next) => {
   if (req.originalUrl === '/' || req.originalUrl === '/api/v1/docs/') {
     next();
   } else {
-    const tokenFromBody = req.body.token; // Obtener el token del cuerpo de la solicitud
+    let token;
 
-    if (tokenFromBody) {
-      // Si hay un token en el cuerpo, configurarlo en el objeto de solicitud para su posterior manejo si es necesario
-      req.token = tokenFromBody;
+    // Check for token in request body or headers
+    if (req.body.token) {
+      token = req.body.token; // Get the token from the request body
+    } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1]; // Get the token from the Authorization header
+    }
+
+    if (token) {
+      req.token = token; // Set the token in the request object
       next();
     } else {
-      return res.status(401).json({ error: 'Unauthorized. Need token in body' });
+      return res.status(401).json({ error: 'Unauthorized. Token missing.' });
     }
   }
 };
 
-
 // Middleware to attach token in headers
 const attachHeaders = (req, res, next) => {
-  console.log(req.originalUrl);
   if (req.originalUrl === '/' || req.originalUrl === '/api/v1/docs/') {
     next();
   } else {
-    const tokenFromBody = req.body.token; // Obtener el token del cuerpo de la solicitud
-
-    if (tokenFromBody) {
-      // Configurar el token en el encabezado 'Authorization' como 'Bearer <token>'
-      req.headers['Authorization'] = `Bearer ${tokenFromBody}`;
+    if (req.body.token) {
+      // Pass the token from the body to the Authorization header
+      req.headers['Authorization'] = `Bearer ${req.body.token}`;
       next();
     } else {
-      return res.status(401).json({ error: 'Unauthorized headers.' });
+      // Token is not in the body, continue to the next middleware
+      next();
     }
   }
 };

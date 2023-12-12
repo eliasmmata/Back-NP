@@ -1,11 +1,10 @@
 
-import bcrypt from 'bcrypt';
-
 import { connect } from "../database/database.js"
 import wpSitesQueries from "../database/queries/wpsitesQueries.js";
 
 // Get All Post from a WP-site
 const getWpSites = async (req, res) => {
+
     const connection = await connect();
 
     try {
@@ -43,6 +42,7 @@ const getWpSites = async (req, res) => {
 
 // Create new WP-site
 const postWpSite = async (req, res) => {
+
     const connection = await connect();
 
     try {
