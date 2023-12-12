@@ -1,16 +1,37 @@
 import axios from 'axios';
-import fs from 'fs';
 
 import { getWpSiteId } from '../utils/dbUtils.js'
 
 // Get All Post from a WP-site
 const getPostsList = (req, res) => {
 
-    const { wpSite } = req.params;
-    const wordpressApiUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+    const { wpSiteId } = req.params;
 
-    axios
-        .get(wordpressApiUrl)
+    let wordpressApiPostUrl = '';
+    let wpSite = '';
+
+    console.log('wpSiteId', wpSiteId);
+
+    getWpSiteId(wpSiteId)
+        .then((result) => {
+            if (!result || typeof result !== 'object') {
+                console.log('No se obtuvo ningún resultado válido de getWpSiteId');
+                return res.status(400).json({ error: 'Error al obtener los datos del sitio WP de la BBDD' });
+            }
+
+            wpSite = result.api_url;
+
+            wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
+
+            console.log('wordpressApiPostUrl', wordpressApiPostUrl);
+
+            if (!wpSite || typeof wpSite !== 'string' || wpSite.trim() === '') {
+                console.log('No se encontró la URL válida del Sitio Wordpress');
+                return res.status(400).json({ error: 'URL del Sitio Wordpress no reconocida' });
+            }
+
+            return axios.get(wordpressApiPostUrl)
+        })
         .then((response) => {
             if (response.status === 200) {
                 res.status(200).json(response.data);
@@ -23,24 +44,41 @@ const getPostsList = (req, res) => {
         });
 };
 
-// Get single post by Id from a WP-site
+// Get single post by Id from a WP-site Id
 const getPostById = (req, res) => {
 
     const postId = req.params.postId;
-    const wpUrl = req.query.wpUrl;
-    const wordpressApiUrl = `https://${wpUrl}/wp-json/wp/v2/posts/${postId}`;
+    const wp_site_id = req.query.wp_site_id;
 
-    axios
-        .get(wordpressApiUrl)
+    let wordpressApiPostUrl = '';
+    let wpSite = '';
+
+    getWpSiteId(wp_site_id)
+        .then((result) => {
+            if (!result || typeof result !== 'object') {
+                console.log('No se obtuvo ningún resultado válido de getWpSiteId');
+                return res.status(400).json({ error: 'Error al obtener los datos del sitio WP de la BBDD' });
+            }
+            wpSite = result.api_url;
+
+            wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts/${postId}`;
+
+            if (!wpSite || typeof wpSite !== 'string' || wpSite.trim() === '') {
+                console.log('No se encontró la URL válida del Sitio Wordpress');
+                return res.status(400).json({ error: 'URL del Sitio Wordpress no reconocida' });
+            }
+
+            return axios.get(wordpressApiPostUrl)
+        })
         .then((response) => {
             if (response.status === 200) {
                 res.status(200).json(response.data);
             } else {
-                res.status(response.status).json({ error: 'Failed to retrieve the post' });
+                res.status(response.status).json({ error: 'Fallo al recuperar el post' });
             }
         })
         .catch((error) => {
-            res.status(500).json({ message: 'An error occurred while fetching the post', error: error.message });
+            res.status(500).json({ message: `Ocurrió un error mientras se hacía el fetch del post en ${wpSite}`, error: error.message });
         });
 };
 

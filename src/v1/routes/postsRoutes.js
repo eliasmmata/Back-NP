@@ -6,17 +6,17 @@ import * as postsController from '../../controllers/postsController.js'
 
 // ----- GET --------------------------------------------------------------------
 
-// Get All Posts from a wpSite
+// Get All Posts from a wpSite Id
 
 /**
  * @openapi
- * /api/v1/posts/{wpsiteName}:
+ * /api/v1/posts/{wpsiteId}:
  *   get:
- *     summary: Get a list of all posts from a specific url WordPress site
+ *     summary: Get a list of all posts from a specific WordPress site ID
  *     tags:
  *       - Posts
  *     parameters:
- *       - name: wpSite
+ *       - name: wpSiteId
  *         in: path
  *         description: WordPress site identifier
  *         required: true
@@ -43,27 +43,30 @@ import * as postsController from '../../controllers/postsController.js'
  *         description: No posts found for the specified site
  */
 
-router.get('/posts/:wpSite', postsController.getPostsList);
+router.get('/posts/:wpSiteId', postsController.getPostsList);
 
 // Get Single Post by ID
 
 /**
  * @openapi
- * /api/v1/post/{postId}:
+ * /api/v1/post/{postId}?wp_site_id=:
  *   get:
- *     summary: Get a single post by its ID
+ *     summary: Get a post by ID with a specific wp_site_id
+ *     description: Retrieve a post by its ID with a specific wp_site_id
  *     tags:
  *       - Posts
  *     parameters:
  *       - in: path
  *         name: postId
  *         required: true
+ *         description: The ID of the post to retrieve
  *         schema:
  *           type: integer
- *         description: The ID of the post to retrieve
+ *           format: int64
  *       - in: query
- *         name: wpUrl
- *         required: false
+ *         name: wp_site_id
+ *         required: true
+ *         description: WordPress site ID from DB
  *     responses:
  *       200:
  *         description: Successful response of a single post
