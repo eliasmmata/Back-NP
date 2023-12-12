@@ -10,8 +10,6 @@ const getPostsList = (req, res) => {
     let wordpressApiPostUrl = '';
     let wpSite = '';
 
-    console.log('wpSiteId', wpSiteId);
-
     getWpSiteId(wpSiteId)
         .then((result) => {
             if (!result || typeof result !== 'object') {
@@ -22,8 +20,6 @@ const getPostsList = (req, res) => {
             wpSite = result.api_url;
 
             wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
-
-            console.log('wordpressApiPostUrl', wordpressApiPostUrl);
 
             if (!wpSite || typeof wpSite !== 'string' || wpSite.trim() === '') {
                 console.log('No se encontró la URL válida del Sitio Wordpress');

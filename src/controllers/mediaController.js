@@ -3,17 +3,34 @@ import fs from 'fs';
 
 import { getWpSiteId } from '../utils/dbUtils.js'
 
-// AXIOS Get Media ID (feature_media) by PostID
+// AXIOS Get Media ID (feature_media) by PostID and WpSite ID from DB
 const getMediaByPostId = (req, res) => {
 
-    const postId = req.params.postId;
+    const { postId } = req.params;
 
-    const wpSite = req.query.wpUrl;
+    const wp_site_id = req.query.wp_site_id;
 
-    const apiUrl = `https://${wpSite}/wp-json/wp/v2/posts/${postId}`;
+    let wordpressApiMediaUrl = '';
+    let wpSite = '';
 
-    axios
-        .get(apiUrl)
+    getWpSiteId(wp_site_id)
+        .then((result) => {
+            if (!result || typeof result !== 'object') {
+                console.log('No se obtuvo ningún resultado válido de getWpSiteId');
+                return res.status(400).json({ error: 'Error al obtener los datos del sitio WP de la BBDD' });
+            }
+
+            wpSite = result.api_url;
+
+            wordpressApiMediaUrl = `https://${wpSite}/wp-json/wp/v2/posts/${postId}`;
+
+            if (!wpSite || typeof wpSite !== 'string' || wpSite.trim() === '') {
+                console.log('No se encontró la URL válida del Sitio Wordpress');
+                return res.status(400).json({ error: 'URL del Sitio Wordpress no reconocida' });
+            }
+
+            return axios.get(wordpressApiMediaUrl)
+        })
         .then((response) => {
             if (response.status === 200) {
                 // Check if media attachments exist
@@ -30,30 +47,49 @@ const getMediaByPostId = (req, res) => {
             }
         })
         .catch((error) => {
-            console.log(error);
-            res.status(500).json({ message: 'An error occurred while fetching the post media', error: error.message });
+            if (error.response && error.response.status === 404) {
+                res.status(404).json({ message: 'Post ID not found in WordPress site' });
+            } else {
+                console.error(error);
+                res.status(500).json({ message: `Error while fetching en ${wpSite} feature_media ID: ${error.message}` });
+            }
         });
 };
 
 // get media details by feature_media ID
 const getFeaturedMediaDetails = (req, res) => {
 
-    const featuredMediaId = req.params.featuredMediaId;
+    const { featuredMediaId } = req.params;
 
-    const wpSite = req.query.wpUrl;
+    const wp_site_id = req.query.wp_site_id;
 
-    const apiUrl = `https://${wpSite}/wp-json/wp/v2/media/${featuredMediaId}`;
+    let wordpressApiMediaUrl = '';
+    let wpSite = '';
 
-    axios
-        .get(apiUrl)
+
+    getWpSiteId(wp_site_id)
+        .then((result) => {
+            if (!result || typeof result !== 'object') {
+                console.log('No se obtuvo ningún resultado válido de getWpSiteId');
+                return res.status(400).json({ error: 'Error al obtener los datos del sitio WP de la BBDD' });
+            }
+
+            wpSite = result.api_url;
+
+            wordpressApiMediaUrl = `https://${wpSite}/wp-json/wp/v2/media/${featuredMediaId}`;
+
+            if (!wpSite || typeof wpSite !== 'string' || wpSite.trim() === '') {
+                console.log('No se encontró la URL válida del Sitio Wordpress');
+                return res.status(400).json({ error: 'URL del Sitio Wordpress no reconocida' });
+            }
+
+            return axios.get(wordpressApiMediaUrl)
+        })
         .then((response) => {
             if (response.status === 200) {
                 const mediaDetails = response.data;
                 if (mediaDetails) {
-                    console.log('Featured Media Details:', mediaDetails);
-
                     console.log('PATH', mediaDetails.link);
-
                 } else {
                     console.log('This post does not have any attached media.');
                 }
@@ -64,8 +100,12 @@ const getFeaturedMediaDetails = (req, res) => {
             }
         })
         .catch((error) => {
-            console.log(error);
-            res.status(500).json({ message: 'An error occurred while fetching featured media details', error: error.message });
+            if (error.response && error.response.status === 404) {
+                res.status(404).json({ message: 'feature media ID not found in WordPress site' });
+            } else {
+                console.error(error);
+                res.status(500).json({ message: `Error while fetching en ${wpSite} featured media details: ${error.message}` });
+            }
         });
 };
 

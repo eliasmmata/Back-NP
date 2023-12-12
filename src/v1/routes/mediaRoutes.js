@@ -12,9 +12,9 @@ import * as mediaController from '../../controllers/mediaController.js'
 
 /**
  * @openapi
- * /api/v1/media/{postId}:
+ * /api/v1/media/{postId}?wp_site_id=:
  *   get:
- *     summary: Get media ID (featured_media) attached to a post by Post ID
+ *     summary: Get media ID (featured_media) attached to a post by Post ID and wp_site_id
  *     tags:
  *       - Media
  *     parameters:
@@ -25,8 +25,11 @@ import * as mediaController from '../../controllers/mediaController.js'
  *           type: integer
  *         description: The ID of the post for which to retrieve attached media
  *       - in: query
- *         name: wpUrl
- *         required: false
+ *         name: wp_site_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: WordPress site ID from DB
  *     responses:
  *       200:
  *         description: Successful response with the media attached to the specified post
@@ -47,9 +50,9 @@ router.get('/media/:postId', mediaController.getMediaByPostId);
 
 /**
  * @openapi
- * /api/v1/media/data/{featuredMediaId}:
+ * /api/v1/media/data/{featuredMediaId}?wp_site_id=:
  *   get:
- *     summary: Get media data by featured_media ID
+ *     summary: Get media data by featured_media ID and and wp_site_id
  *     tags:
  *       - Media
  *     parameters:
@@ -60,8 +63,11 @@ router.get('/media/:postId', mediaController.getMediaByPostId);
  *           type: integer
  *         description: The ID of the featured_media item for which to retrieve details
  *       - in: query
- *         name: wpUrl
- *         required: false
+ *         name: wp_site_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: WordPress site ID from DB
  *     responses:
  *       200:
  *         description: Successful response with the details of the specified featured_media item
