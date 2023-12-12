@@ -32,6 +32,9 @@ const PORT = process.env.PORT || 3001
 app.use(responseTime())
 app.use(express.json())
 
+// Serving Swagger documentation (Aquí para que no necesite authenticateToken)
+V1SwaggerDocs(app, PORT); // Placed the Swagger documentation serving middleware here
+
 // Login route without authentication middleware
 app.use("/api/v1", loginRoutes);
 
@@ -66,7 +69,6 @@ redisClient
     // This code will execute after the Redis connection is established
     app.listen(PORT, "0.0.0.0",  () => {
       console.log(`API is listening on port ${PORT}`)
-      V1SwaggerDocs(app, PORT)
     });
   })
   .catch((err) => {
