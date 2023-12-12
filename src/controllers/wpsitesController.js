@@ -56,14 +56,11 @@ const postWpSite = async (req, res) => {
             return res.status(400).json({ error: 'Name, API URL, username, or password not provided' });
         }
 
-        // Hashea la contraseña utilizando bcrypt antes de guardarla en la base de datos
-        const hashedPassword = await bcrypt.hash(password, 5); // Ajusta el número de rondas según tu preferencia
-
         const query = wpSitesQueries.wpNewSite
             .replace('?', `"${name}"`)
             .replace('?', `"${api_url}"`)
             .replace('?', `"${username}"`)
-            .replace('?', `"${hashedPassword}"`)
+            .replace('?', `"${password}"`)
 
         await connection.query(query);
 
@@ -84,9 +81,6 @@ const putWpSite = async (req, res) => {
     try {
         const wp_id = req.params.wpSiteId; // Assuming the ID of the WordPress site to update is in the URL parameter
         const { wp_name } = req.body; // New name for the WordPress site from the request body
-
-        console.log('wp_id', wp_id);
-        console.log('wp_name', wp_name);
 
         // Ensure that wp_name exists in the request body
         if (!wp_name || !wp_id) {

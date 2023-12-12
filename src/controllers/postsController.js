@@ -47,7 +47,6 @@ const getPostById = (req, res) => {
 // Insert new Entry Post in a WP-site
 const postPostById = (req, res) => {
 
-    const authHeader = req.headers['authorization'];
     const { wpSiteId } = req.params;
     const nuevaEntrada = req.body;
 
@@ -57,6 +56,7 @@ const postPostById = (req, res) => {
 
     getWpSiteId(wpSiteId)
         .then((result) => {
+
             if (!result || typeof result !== 'object') {
                 console.log('No se obtuvo ningún resultado válido de getWpSiteId');
                 return res.status(400).json({ error: 'Error al obtener los datos del sitio WP de la BBDD' });
@@ -69,21 +69,11 @@ const postPostById = (req, res) => {
                 return res.status(400).json({ error: 'No se reconoció la url del Sitio Wordpress' });
             }
 
-            if (!authHeader) {
-                console.log('No se encontró o reconoció Authorization header en la solicitud.');
-                return res.status(401).json({ error: 'No se reconocieron o introdujeron credenciales correctas' });
-            }
-
             wordpressApiPostUrl = `https://${wpSite}/wp-json/wp/v2/posts`;
 
-            const [username, ...passwordParts] = authHeader.split(':');
-            const password = passwordParts.join(':').trim();
-            credentials = Buffer.from(`${username}:${password}`).toString('base64');
+            const { username, password } = result; // Assuming these fields exist in your result object
 
-            console.log('username', username);
-            console.log('password', password);
-            console.log('wordpressApiPostUrl', wordpressApiPostUrl);
-            console.log('nuevaEntrada', nuevaEntrada);
+            credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
             return axios.post(wordpressApiPostUrl, nuevaEntrada, {
                 headers: {
@@ -104,10 +94,7 @@ const postPostById = (req, res) => {
             }
         })
         .catch((error) => {
-            if (!res.headersSent) {
-                res.status(500).json({ message: 'Ocurrió un error inesperado al subir el nuevo post', error: error });
-
-            }
+            res.status(500).json({ message: 'Ocurrió un error inesperado al subir el nuevo post', error: error });
         });
 };
 

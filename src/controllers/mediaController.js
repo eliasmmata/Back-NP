@@ -72,7 +72,6 @@ const getFeaturedMediaDetails = (req, res) => {
 // AXIOS Post Image to a WP Site (by its Id)
 const postImageToWpSite = (req, res) => {
 
-    const authHeader = req.headers['authorization'];
     const { wpSiteId } = req.params;
     const { image_path } = req.body;
 
@@ -97,13 +96,8 @@ const postImageToWpSite = (req, res) => {
                 return res.status(400).json({ error: 'URL del Sitio Wordpress no reconocida' });
             }
 
-            if (!authHeader) {
-                console.log('No se encontró o reconoció Authorization header en la solicitud.');
-                return res.status(401).json({ error: 'No se reconocieron o introdujeron credenciales correctas' });
-            }
+            const { username, password } = result; // Assuming these fields exist in your result object
 
-            const [username, ...passwordParts] = authHeader.split(':');
-            const password = passwordParts.join(':').trim();
             credentials = Buffer.from(`${username}:${password}`).toString('base64');
 
             if (!image_path) {
@@ -144,9 +138,7 @@ const postImageToWpSite = (req, res) => {
             }
         })
         .catch((error) => {
-            if (!res.headersSent) {
-                res.status(500).json({ message: `Ocurrió un error inesperado al subir la imagen al sitio`, error: error });
-            }
+            res.status(500).json({ message: `Ocurrió un error inesperado al subir la imagen al sitio`, error: error });
         })
         .finally(() => {
             if (nombreArchivoImagen) {
