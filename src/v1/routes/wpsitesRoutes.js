@@ -43,9 +43,23 @@ import * as wpsitesController from '../../controllers/wpsitesController.js'
  *                         cat_id:
  *                           type: integer
  *                           description: Category ID
- *                         cat_name:
+ *                         name:
  *                           type: string
  *                           description: Category name
+ *                         external_id:
+ *                           type: integer
+ *                           description: External ID
+ *                   tags:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         tag_id:
+ *                           type: integer
+ *                           description: Tag ID
+ *                         name:
+ *                           type: string
+ *                           description: Tag name
  *                         external_id:
  *                           type: integer
  *                           description: External ID
@@ -56,7 +70,6 @@ router.get('/wpsites/', wpsitesController.getWpSites);
 // ----- POST --------------------------------------------------------------------
 
 // Crear nuevo registro de Worpdress activo en BBDD
-
 
 /**
  * @openapi

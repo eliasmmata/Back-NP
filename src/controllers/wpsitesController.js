@@ -1,44 +1,70 @@
 
 import { connect } from "../database/database.js"
+
+import axios from 'axios';
+
 import wpSitesQueries from "../database/queries/wpsitesQueries.js";
 
 // Get All Post from a WP-site
 const getWpSites = async (req, res) => {
-
     const connection = await connect();
 
     try {
-        const query = wpSitesQueries.wpSitesWithCategories;
-
+        const query = wpSitesQueries.wpSites;
         const [rows] = await connection.query(query);
 
-        const wpsites = [];
+        const siteRequests = rows.map(async row => {
+            const apiUrl = row.api_url;
 
-        rows.forEach(item => {
-            const existingItem = wpsites.find(i => i.wp_id === item.wp_id);
-            const { wp_id, wp_name, api_url, ...rest } = item;
-            const categoryData = { ...rest };
+            const categoriesRequest = axios.get(`https://${apiUrl}/wp-json/wp/v2/categories`);
+            const tagsRequest = axios.get(`https://${apiUrl}/wp-json/wp/v2/tags`);
 
-            if (existingItem) {
-                existingItem.categories.push(categoryData);
-            } else {
-                wpsites.push({
-                    wp_id,
-                    wp_name,
-                    api_url,
-                    categories: [categoryData]
-                });
+            try {
+                const [categoriesResponse, tagsResponse] = await Promise.all([categoriesRequest, tagsRequest]);
+                const categories = categoriesResponse.data.map(category => ({
+                    id: category.id,
+                    name: category.name,
+                    slug: category.slug,
+                    parent: category.parent,
+                    description: category.description
+                }));
+
+                const tags = tagsResponse.data.map(tag => ({
+                    id: tag.id,
+                    name: tag.name,
+                    slug: tag.slug,
+                    parent: tag.parent,
+                    description: tag.description
+                }));
+                return {
+                    wp_id: row.wp_id,
+                    wp_name: row.wp_name,
+                    api_url: row.api_url,
+                    categories,
+                    tags
+                };
+            } catch (error) {
+                console.error(`Error fetching data from ${apiUrl}:`, error);
+                return {
+                    wp_id: row.wp_id,
+                    wp_name: row.wp_name,
+                    api_url: row.api_url,
+                    categories: [],
+                    tags: []
+                };
             }
         });
 
+        const wpsites = await Promise.all(siteRequests);
         res.status(200).json(wpsites);
     } catch (error) {
-        res.status(500).json({ error: 'Error fetching wordpress sites' });
-        throw error;
+        console.error('Error fetching WordPress sites:', error);
+        res.status(500).json({ error: 'Error fetching WordPress sites:', error });
     } finally {
         connection.release();
     }
 };
+
 
 // Create new WP-site
 const postWpSite = async (req, res) => {
@@ -95,8 +121,8 @@ const putWpSite = async (req, res) => {
 
         res.status(200).json({ message: 'Wp site name updated' });
     } catch (error) {
+        console.error('Error updating WordPress site name:', error);
         res.status(500).json({ error: 'Error updating WordPress site name' });
-        throw error;
     } finally {
         connection.release();
     }
