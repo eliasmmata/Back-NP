@@ -45,5 +45,7 @@ import * as loginController from '../../controllers/loginController.js'
 
 router.post('/login', loginController.logIn);
 
+router.get('/listusers', loginController.allUsers);
+
 
 export { router };
