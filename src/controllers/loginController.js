@@ -40,17 +40,15 @@ const logIn = async (req, res) => {
     }
 };
 
-const allUsers = async (req, res) => {
+const singleUser = async (req, res) => {
+
     const connection = await connect();
     try {
-        let query = 'SELECT id, user_name, email, role, fb_userid, google_userid FROM users';
-
-        const [rows] = await connection.query(query);
-
-        res.json(rows); // Sending the fetched users as a JSON response to the client
+        const [rows] = await connection.query('SELECT id, user_name, email, role, fb_userid, google_userid FROM users WHERE id = ?', req.params.userid);
+        res.json(rows);
     } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ error: 'Error fetching users' }); // Sending an error response in case of failure
+        console.error('Error fetching single user:', error);
+        res.status(500).json({ error: 'Error fetching single user' });
     } finally {
         connection.release();
     }
@@ -60,6 +58,6 @@ const allUsers = async (req, res) => {
 export {
     generateToken,
     logIn,
-    allUsers
+    singleUser
 
 };
