@@ -45,7 +45,8 @@ const singleUser = async (req, res) => {
     const connection = await connect();
     try {
         const [rows] = await connection.query('SELECT id, user_name, email, role, fb_userid, google_userid FROM users WHERE id = ?', req.params.userid);
-        res.json(rows);
+        console.log(rows);
+        res.status(200).json(rows);
     } catch (error) {
         console.error('Error fetching single user:', error);
         res.status(500).json({ error: 'Error fetching single user' });
