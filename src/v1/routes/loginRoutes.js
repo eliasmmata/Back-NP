@@ -47,5 +47,7 @@ router.post('/login', loginController.logIn);
 
 router.get('/user/:userid', loginController.singleUser);
 
+router.put('/user/:userid', loginController.updateUser);
+
 
 export { router };

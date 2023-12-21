@@ -54,10 +54,36 @@ const singleUser = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const connection = await connect();
+
+    try {
+        const { user_name, email } = req.body;
+        const userId = req.params.userid;
+
+        // Update query for user_name and email where id matches
+        const updateQuery = 'UPDATE users SET user_name = ?, email = ? WHERE id = ?';
+
+        // Executing the update query with the provided values
+        const [result] = await connection.query(updateQuery, [user_name, email, userId]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'User updated successfully' });
+        } else {
+            res.status(404).json({ error: 'User not found or no changes made' });
+        }
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Error updating user' });
+    } finally {
+        connection.release();
+    }
+};
+
 
 export {
     generateToken,
     logIn,
-    singleUser
-
+    singleUser,
+    updateUser
 };
